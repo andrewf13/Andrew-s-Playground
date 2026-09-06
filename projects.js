@@ -110,13 +110,13 @@ window.PROJECTS = [
     "category": "Travel",
     "kind": "3D neighbourhood explorer",
     "edition": "Andrew’s local list · 2026",
-    "description": "An expat’s five food and drink picks, explored through three miniature neighbourhoods. Find a hawker meal, a proper cocktail, smokehouse favourites and botanical gelato.",
+    "description": "A lively voxel Singapore with six neighbourhoods and ten food stops. Explore Andrew’s picks, from hawker markets and Little India to the Golden Mile Thai trail.",
     "controls": "3D · WebGL",
     "file": "artifacts/singapore-local.html",
     "line1": "SINGAPORE,",
     "line2": "ANDREW’S WAY",
     "year": "2026",
     "number": "08",
-    "bytes": 715164
+    "bytes": 737152
   }
 ];
