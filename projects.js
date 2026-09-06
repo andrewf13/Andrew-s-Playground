@@ -110,13 +110,13 @@ window.PROJECTS = [
     "category": "Travel",
     "kind": "3D neighbourhood explorer",
     "edition": "Andrew’s local list · 2026",
-    "description": "A lively voxel Singapore with six neighbourhoods and ten food stops. Explore Andrew’s picks, from hawker markets and Little India to the Golden Mile Thai trail.",
+    "description": "Watch Changi jets, spot the Merlion and explore a lively voxel Singapore. Twelve places include Andrew’s food picks, Botanic Gardens and Night Safari.",
     "controls": "3D · WebGL",
     "file": "artifacts/singapore-local.html",
     "line1": "SINGAPORE,",
     "line2": "ANDREW’S WAY",
     "year": "2026",
     "number": "08",
-    "bytes": 737152
+    "bytes": 761132
   }
 ];

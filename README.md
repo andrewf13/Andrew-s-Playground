@@ -10,7 +10,7 @@ No account or installation needed.
 
 | Project | What’s inside |
 | --- | --- |
-| [Singapore, Andrew’s Way](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=singapore-local) | Explore a colourful voxel island, six neighbourhoods and ten food stops, with Andrew’s picks, a Golden Mile Thai trail and real map links. |
+| [Singapore, Andrew’s Way](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=singapore-local) | Explore a colourful voxel island with Changi jets, Marina Bay landmarks and twelve places, including Andrew’s food picks, Botanic Gardens and Night Safari. |
 | [Shield Dojo](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=shield-dojo) | An Amiga-inspired karate arcade. Deflect bouncing balls, sharpen your timing and climb from white belt to Legend. |
 | [Albion Transport](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=albion-transport) | Build a passenger transport empire across 1950s Britain with trains, buses and propeller aircraft. |
 | [Eagle: The Final Descent](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=eagle-descent) | Follow Apollo 11’s lunar module from the computer alarms and boulder field to touchdown. |

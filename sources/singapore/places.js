@@ -6,10 +6,10 @@ window.SG_DATA={
       "name": "Singapore",
       "short": "Island overview",
       "kicker": "THE WHOLE PICTURE",
-      "description": "Ten food stops across six neighbourhoods. Pick a colourful district and step into its streets.",
+      "description": "Twelve places to explore, plus the little landmarks that make the island feel like Singapore.",
       "colour": "#67d3bc",
-      "count": 10,
-      "intro": "Ten food stops. Six neighbourhoods. Pick a pin and wander."
+      "count": 12,
+      "intro": "Watch the jets. Spot the Merlion. Find your next favourite."
     },
     {
       "id": "river",
@@ -70,6 +70,26 @@ window.SG_DATA={
       "intro": "The old food scene lives on around Beach Road and Lavender.",
       "colour": "#ff9173",
       "count": 2
+    },
+    {
+      "id": "gardens",
+      "name": "Singapore Botanic Gardens",
+      "short": "Botanic Gardens",
+      "kicker": "07 / A LITTLE MORE SHADE",
+      "description": "Andrew’s place to get under the trees and out of the built-up streets.",
+      "intro": "Leafy paths, a lake and a breather under the canopy.",
+      "colour": "#a9e65a",
+      "count": 1
+    },
+    {
+      "id": "mandai",
+      "name": "Night Safari · Mandai",
+      "short": "Night Safari",
+      "kicker": "08 / THE ISLAND AFTER DARK",
+      "description": "A night-time wildlife outing in the green north of Singapore.",
+      "intro": "Forest trails, nocturnal animals and a little safari tram.",
+      "colour": "#c6b0ff",
+      "count": 1
     }
   ],
   "places": [
@@ -377,6 +397,176 @@ window.SG_DATA={
       "extraSource": "https://www.facebook.com/deetonguethai/",
       "pair": "diandin",
       "pairText": "For a Beach Road option instead, Diandin Leluk is at City Gate."
+    },
+    {
+      "id": "botanic-gardens",
+      "number": "11",
+      "zone": "gardens",
+      "name": "Singapore Botanic Gardens",
+      "short": "Botanic Gardens",
+      "type": "Gardens & shaded walks",
+      "occasion": "A leafy daytime break",
+      "tag": "Andrew’s pick",
+      "note": "Andrew recommends the Gardens because it feels cooler under the trees.",
+      "description": "Step away from the streets into a landscape of big trees, lawns and lakes. This is Andrew’s choice for a greener, shadier stretch of the day.",
+      "address": "1 Cluny Road, Singapore 259569",
+      "hours": "Main gardens: daily 5 am–midnight, with free entry. Individual gardens and attractions have separate hours and may charge admission.",
+      "orderLabel": "Look out for",
+      "order": "A shaded walk, the lake and the bandstand. The Learning Forest is another option; check its own opening hours.",
+      "tip": "Shade can feel cooler, but this is still an outdoor tropical garden. Pick the entrance that suits your route and bring water.",
+      "position": [
+        -12,
+        0,
+        0
+      ],
+      "source": "https://www.nparks.gov.sg/sbg",
+      "sourceLabel": "NParks: gardens, address & entry",
+      "extraSource": "https://sbg.nparks.gov.sg/visit/general-info/",
+      "extraLabel": "Individual garden opening hours",
+      "pair": "manhattan",
+      "pairText": "Manhattan is another of Andrew’s Orchard-area picks for later in the day. Use Maps to plan the journey.",
+      "colour": 11134554
+    },
+    {
+      "id": "night-safari",
+      "number": "12",
+      "zone": "mandai",
+      "name": "Night Safari",
+      "short": "Night Safari",
+      "type": "Nocturnal wildlife park",
+      "occasion": "An evening at Mandai",
+      "tag": "Andrew’s pick",
+      "note": "“Not one to miss.” — Andrew, on the Night Safari.",
+      "description": "Andrew’s after-dark wildlife recommendation. Explore on foot and aboard the safari tram in Mandai’s forest setting.",
+      "address": "80 Mandai Lake Road, Singapore 729826",
+      "hours": "The current park page lists daily 6 pm–midnight, last entry 11:15 pm. Tram rides begin at 7 pm. Check the available admission time when booking.",
+      "orderLabel": "Look out for",
+      "order": "The walking trails and Safari Tram Adventure. The miniature animals and trail layout are playful representations, not a guide to actual exhibits.",
+      "tip": "Book a dated ticket and the required admission slot. This is Night Safari, a separate experience from Singapore Zoo. Expect low lighting and tram commentary; check Mandai’s visitor guide to plan your visit.",
+      "position": [
+        -22,
+        0,
+        16
+      ],
+      "source": "https://www.mandai.com/en/night-safari.html",
+      "sourceLabel": "Official tickets & current park hours",
+      "extraSource": "https://www.mandai.com/en/plan-your-visit/know-before-you-go/night-safari.html",
+      "extraLabel": "Tram times & visitor guide",
+      "pair": "botanic-gardens",
+      "pairText": "For a daytime green escape instead, Andrew recommends the Botanic Gardens. Mandai is a separate journey north.",
+      "colour": 13021439
+    }
+  ],
+  "landmarks": [
+    {
+      "id": "changi",
+      "short": "Changi Airport",
+      "badge": "SIN",
+      "position": [
+        79,
+        0,
+        -5
+      ],
+      "pinY": 10,
+      "description": "Your hello to Singapore. Look for the control tower, terminal gates and little Singapore Airlines jets arriving and departing.",
+      "note": "The flight loop is an animation, not live traffic or a real approach procedure.",
+      "source": "https://www.changiairport.com/en/at-changi/map.html",
+      "sourceLabel": "Official airport map",
+      "query": "Singapore Changi Airport"
+    },
+    {
+      "id": "mbs",
+      "short": "Marina Bay Sands",
+      "badge": "MBS",
+      "position": [
+        21,
+        0,
+        25
+      ],
+      "pinY": 28,
+      "description": "Three towers, one boat-shaped rooftop. Spot the tiny pool across the top of this oversized voxel landmark.",
+      "note": "Landmarks are enlarged so you can recognise them across the island.",
+      "source": "https://www.marinabaysands.com/guides/exceptional-experiences/marina-bay-sands-architecture.html",
+      "sourceLabel": "Marina Bay Sands architecture",
+      "query": "Marina Bay Sands Singapore"
+    },
+    {
+      "id": "merlion",
+      "short": "Merlion",
+      "badge": "ML",
+      "position": [
+        3,
+        0,
+        23
+      ],
+      "pinY": 10,
+      "description": "A lion’s head, a fish’s body and a splash into Marina Bay. Singapore’s familiar waterfront mascot, in little blocks.",
+      "note": "Look across the miniature bay towards Marina Bay Sands.",
+      "source": "https://www.visitsingapore.com/neighbourhood/featured-neighbourhood/marina-bay/merlion-park/",
+      "sourceLabel": "Singapore Tourism Board: Merlion Park",
+      "query": "Merlion Park Singapore"
+    },
+    {
+      "id": "sentosa",
+      "short": "Sentosa & southern islands",
+      "badge": "ST",
+      "position": [
+        -30,
+        0,
+        48
+      ],
+      "pinY": 7,
+      "description": "Sentosa is the long island just south of the mainland. Smaller Brani sits in the channel behind it. Look farther south for St John’s, Lazarus and Kusu.",
+      "note": "Island outlines and relative placement are simplified. The small islands are enlarged to make them easy to spot.",
+      "source": "https://www.sentosa.com.sg/en/get-inspired/sentosa-discovery-guide/",
+      "sourceLabel": "Official Sentosa map",
+      "query": "Sentosa Singapore"
+    },
+    {
+      "id": "coney",
+      "short": "Coney Island · Pulau Serangoon",
+      "badge": "CI",
+      "position": [
+        32,
+        0,
+        -39
+      ],
+      "pinY": 5,
+      "description": "The slim green island off Punggol in the northeast is Pulau Serangoon, also known as Coney Island.",
+      "note": "A little pocket of coastal greenery in the overview. Use the NParks map for its real paths and access points.",
+      "source": "https://www.nparks.gov.sg/visit/parks/park-detail/coney-island-park/",
+      "sourceLabel": "NParks: Coney Island Park",
+      "query": "Coney Island Park Singapore"
+    },
+    {
+      "id": "ubin",
+      "short": "Pulau Ubin",
+      "badge": "UB",
+      "position": [
+        60,
+        0,
+        -39
+      ],
+      "pinY": 7,
+      "description": "A larger, wooded island off Singapore’s northeast, with a village, old quarries and coastal habitats.",
+      "note": "Its boomerang-like shape and position are simplified for the miniature.",
+      "source": "https://pulau-ubin.nparks.gov.sg/visitubin/",
+      "sourceLabel": "NParks: visiting Pulau Ubin",
+      "query": "Pulau Ubin Singapore"
+    }
+  ],
+  "mapSources": [
+    {
+      "label": "MPA: anchorages & island positions",
+      "url": "https://www.mpa.gov.sg/api/media/92df9c10-0634-4690-a5f2-caba0817431a/Anchorages-Chartlet.pdf"
+    },
+    {
+      "label": "SLA: St John’s, Lazarus & Kusu",
+      "url": "https://www.sla.gov.sg/properties/management-of-state-land-and-properties/visiting-the-sla-managed-islands/"
+    },
+    {
+      "label": "NLB: Pulau Serangoon / Coney Island",
+      "url": "https://www.nlb.gov.sg/main/article-detail?cmsuuid=e76ce001-56c4-476e-9391-e207f320fa61"
     }
   ]
 };
