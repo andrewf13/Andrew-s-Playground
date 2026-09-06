@@ -1,46 +1,35 @@
 # Andrew’s Playground
 
-A static gallery of seven playable HTML projects, ready for GitHub Pages.
+A collection of browser games, interactive dioramas and miniature worlds. Pick something that catches your eye and jump in.
 
-## Enable GitHub Pages
+**[Enter the Playground →](https://andrewf13.github.io/Andrew-s-Playground/)**
 
-The site files are in the public `andrewf13/Andrew-s-Playground` repository.
+No account or installation needed.
 
-1. Open repository **Settings → Pages**.
-2. Under **Build and deployment**, choose **Deploy from a branch**.
-3. Select **main** and **/ (root)**, then click **Save**.
-4. Wait for the Pages deployment to succeed. GitHub will show the published address.
+## Pick your next adventure
 
-Expected address after enabling Pages: `https://andrewf13.github.io/Andrew-s-Playground/`.
+| Project | What’s inside |
+| --- | --- |
+| [Shield Dojo](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=shield-dojo) | An Amiga-inspired karate arcade. Deflect bouncing balls, sharpen your timing and climb from white belt to Legend. |
+| [Albion Transport](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=albion-transport) | Build a passenger transport empire across 1950s Britain with trains, buses and propeller aircraft. |
+| [Eagle: The Final Descent](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=eagle-descent) | Follow Apollo 11’s lunar module from the computer alarms and boulder field to touchdown. |
+| [Apollo 11: Crawlerway to Sky](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=apollo-rollout) | Accompany the Saturn V from rollout to launch and first-stage separation. |
+| [The Anzac Landing](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=anzac-landing) | Explore the offshore approach, landing boats and first ridges on 25 April 1915. |
+| [The Fall of Singapore](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=singapore-1942) | Follow the February 1942 campaign through a guided miniature of Singapore and its surroundings. |
+| [Gallipoli: A Living Miniature](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=gallipoli) | Roam a fictionalised campaign landscape, follow units and send supplies between the coast and trenches. |
 
-No build workflow or dependency installation is required. The GitHub connection used for uploading these files does not expose Pages administration, so enabling Pages is a one-time owner setup step in GitHub.
+## Make yourself at home
 
-## Included projects
+- Choose **Play now** or **Explore** to open a project.
+- Check each project’s on-screen controls for keyboard, mouse and touch options.
+- Turn on sound inside the project, and use **Fullscreen** for a closer look.
+- Select **HTML ↓** to download a copy you can open in your browser offline.
+- Use **← Playground** to return to the collection.
 
-- Shield Dojo — Bounce Edition v3, fixed 4:3, head/chest/knee arrivals.
-- Albion Transport — passenger transport management in the 1950s.
-- Eagle: The Final Descent — lunar landing diorama and soundscape.
-- Apollo 11: Crawlerway to Sky — rollout, launch and first-stage separation.
-- The Anzac Landing — guided 25 April 1915 landing sequence.
-- The Fall of Singapore — guided February 1942 diorama.
-- Gallipoli: A Living Miniature — fictionalised campaign sandbox.
+The larger 3D scenes are best enjoyed on a desktop or tablet with a browser that supports WebGL. The historical dioramas are stylised interpretations; their source notes explain the simplifications.
 
-## Files
+## A playground, always growing
 
-- `index.html`, `styles.css`, `home.js`: gallery and category filters.
-- `projects.js`: project titles, descriptions, categories and file locations.
-- `play.html`, `play.js`: project viewer, home navigation, fullscreen and downloads.
-- `artifacts/`: self-contained playable HTML files; each retains its original source notes and bundled third-party licence notices.
-- `assets/dojo-preview.html`: one static frame drawn by the actual Shield Dojo renderer. It does not start a game or run a continuous animation loop.
-- `.nojekyll`: tells GitHub Pages to serve the static files directly.
-- `404.html`: a small not-found page configured for `/Andrew-s-Playground/`.
+These are experimental creations, built with curiosity and AI. Expect a few rough edges along the way.
 
-## Updating the collection
-
-Replace an artifact at its existing path to keep shared links working. Update its entry in `projects.js` when the title or description changes. To add a project, add its HTML under `artifacts/` and append an entry in `projects.js`; update the category counts and no-JavaScript direct links in `index.html` too.
-
-No build step, API keys, external fonts, account system or backend are needed. Project content loads only when visitors open it. A desktop or tablet is recommended for the larger 3D scenes; those projects require WebGL. Sounds follow each project’s original controls.
-
-## Validation
-
-The package was checked for JavaScript syntax, local file references, project identifiers and artifact completeness. Existing HTML projects were preserved byte-for-byte. No browser or physical-device playtest was performed for this gallery build.
+Found a bug or have an idea? [Leave some feedback](https://github.com/andrewf13/Andrew-s-Playground/issues).
