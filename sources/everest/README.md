@@ -10,7 +10,7 @@ From the repository root, run:
 python3 sources/everest/build.py
 ```
 
-This bundles `shell.html`, `three.min.js` and `app.js` into `artifacts/everest-1996.html`. No npm packages, API keys, network requests or build service are needed. Open the HTML directly in a WebGL-enabled browser.
+This bundles `shell.html`, `three.min.js`, `software.js` and `app.js` into `artifacts/everest-1996.html`. No npm packages, API keys, network requests or build service are needed. Open the HTML directly in a WebGL-enabled browser.
 
 Three.js is the MIT-licensed version already bundled in this repository’s Apollo rollout diorama; its original licence header is preserved. The unmodified library is retained locally to make builds reproducible.
 
@@ -40,4 +40,4 @@ This is procedural terrain, not a DEM or navigation map. Horizontal distances an
 
 ## Performance and accessibility
 
-Fixed terrain buffers, instanced seracs, pooled climbers, capped pixel ratio, bounded snow particles and no external assets. Playback starts paused. All controls are native keyboard-accessible elements; the range is labelled; chapter text is exposed to assistive technology. WebGL failure leaves source notes accessible. On small screens the chapter panel stacks above the controls.
+Fixed terrain buffers, instanced seracs, pooled climbers, capped pixel ratio, bounded snow particles and no external assets. Playback starts paused. All controls are native keyboard-accessible elements; the range is labelled; chapter text is exposed to assistive technology. Browsers without WebGL automatically use a lower-detail canvas renderer with the same 3D camera, timeline and controls. On small screens the chapter panel stacks above the controls.

@@ -2,7 +2,7 @@
 (() => {
 const T=THREE,$=id=>document.getElementById(id),V=(x=0,y=0,z=0)=>new T.Vector3(x,y,z),clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),mix=(a,b,t)=>a+(b-a)*t,smooth=t=>t*t*(3-2*t);
 const canvas=$('view');let renderer;
-try{renderer=new T.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});}catch(e){$('error').classList.remove('hidden');$('error').textContent='This browser could not start WebGL. Try a current browser with hardware acceleration enabled. The historical field notes remain available.';}
+try{renderer=new T.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});}catch(e){renderer=new EverestSoftwareRenderer(canvas,T);$('modeNote').textContent='Simplified 3D · graphics compatibility mode';}
 $('info').onclick=()=>{$('notes').showModal();setPlaying(false)};$('closeNotes').onclick=()=>$('notes').close();
 if(!renderer)return;
 renderer.setPixelRatio(Math.min(devicePixelRatio,1.65));renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.25;
@@ -20,6 +20,8 @@ const terr=geom.toNonIndexed(),tp=terr.attributes.position;const colours=[];cons
 const av=V(),bv=V(),cv=V(),norm=V();
 for(let i=0;i<tp.count;i+=3){av.fromBufferAttribute(tp,i);bv.fromBufferAttribute(tp,i+1);cv.fromBufferAttribute(tp,i+2);norm.subVectors(bv,av).cross(cv.clone().sub(av)).normalize();const x=(av.x+bv.x+cv.x)/3,z=(av.z+bv.z+cv.z)/3,y=(av.y+bv.y+cv.y)/3,near=routeNear(x,z);let c=snow.clone();if(norm.y<.62)c.copy(darkrock).lerp(rock,rand());else if(norm.y<.79)c.copy(rock).lerp(snow,rand()*.5);if(near.d<24&&near.u<8&&near.u>1)c.copy(ice).lerp(snow,.35+rand()*.4);if(y<65&&near.u<2)c.copy(rock).lerp(snow,rand()*.45);if(y>253&&y<264&&x>50&&z>0)c.copy(yellow);c.multiplyScalar(.9+rand()*.18);for(let k=0;k<3;k++)colours.push(c.r,c.g,c.b)}
 terr.setAttribute('color',new T.Float32BufferAttribute(colours,3));const mountain=new T.Mesh(terr,new T.MeshStandardMaterial({vertexColors:true,roughness:1,flatShading:true}));scene.add(mountain);geom.dispose();
+if(renderer.isSoftware){const low=new T.PlaneGeometry(size,size,85,85);low.rotateX(-Math.PI/2);const p=low.attributes.position;for(let i=0;i<p.count;i++)p.setY(i,height(p.getX(i),p.getZ(i)));low.computeVertexNormals();const lg=low.toNonIndexed(),lp=lg.attributes.position,ln=lg.attributes.normal,lc=[];for(let i=0;i<lp.count;i++){const x=lp.getX(i),z=lp.getZ(i),y=lp.getY(i),r=routeNear(x,z);const col=new T.Color(ln.getY(i)<.76?'#687884':'#d8e9ee');if(r.d<24&&r.u>1&&r.u<8)col.set('#9ed0df');if(y>253&&y<264&&x>50&&z>0)col.set('#ac9c73');lc.push(col.r,col.g,col.b)}lg.setAttribute('color',new T.Float32BufferAttribute(lc,3));mountain.userData.softwareGeometry=lg;low.dispose();}
+
 const mat=(c,other={})=>new T.MeshStandardMaterial({color:c,roughness:.9,...other});
 const base=new T.Mesh(new T.BoxGeometry(1000,30,1000),mat('#263947'));base.position.y=-24;scene.add(base);
 const foundation=new T.Mesh(new T.BoxGeometry(1004,5,1004),mat('#101f2b'));foundation.position.y=-41;scene.add(foundation);

@@ -12,7 +12,7 @@ window.PROJECTS = [
   "line2": "INTO THE STORM",
   "year": "1996",
   "number": "09",
-  "bytes": 705223
+  "bytes": 709471
 },
   {
     "id": "shield-dojo",
