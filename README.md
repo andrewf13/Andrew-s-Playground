@@ -10,6 +10,7 @@ No account or installation needed.
 
 | Project | What’s inside |
 | --- | --- |
+| [Everest 1996: Into the Storm](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=everest-1996) | A guided ascent through the Khumbu Icefall to the summit, followed by the 10–11 May storm and rescue efforts, with optional sound and source notes. |
 | [Singapore, Andrew’s Way](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=singapore-local) | Explore a colourful voxel island with Changi jets, Marina Bay landmarks and twelve places, including Andrew’s food picks, Botanic Gardens and Night Safari. |
 | [Shield Dojo](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=shield-dojo) | An Amiga-inspired karate arcade. Deflect bouncing balls, sharpen your timing and climb from white belt to Legend. |
 | [Albion Transport](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=albion-transport) | Build a passenger transport empire across 1950s Britain with trains, buses and propeller aircraft. |
@@ -34,3 +35,4 @@ The larger 3D scenes are best enjoyed on a desktop or tablet with a browser that
 These are experimental creations, built with curiosity and AI. Expect a few rough edges along the way.
 
 Found a bug or have an idea? [Leave some feedback](https://github.com/andrewf13/Andrew-s-Playground/issues).
+

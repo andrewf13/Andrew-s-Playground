@@ -1,4 +1,19 @@
 window.PROJECTS = [
+{
+  "id": "everest-1996",
+  "title": "Everest 1996: Into the Storm",
+  "category": "History",
+  "kind": "Guided mountain fly-through",
+  "edition": "10–11 May 1996",
+  "description": "Ascend through the Khumbu Icefall to Everest’s summit, then follow the storm, descent and rescue efforts in a 14-chapter mountain diorama.",
+  "controls": "3D · WebGL · Sound",
+  "file": "artifacts/everest-1996.html",
+  "line1": "EVEREST",
+  "line2": "INTO THE STORM",
+  "year": "1996",
+  "number": "09",
+  "bytes": 705223
+},
   {
     "id": "shield-dojo",
     "title": "Shield Dojo",
@@ -120,3 +135,4 @@ window.PROJECTS = [
     "bytes": 761132
   }
 ];
+
