@@ -1,6 +1,6 @@
 # Wollstonecraft in bloom
 
-First-pass flower walking tour with one real stop, an embedded OpenStreetMap, Google walking directions, accessible photo/illustration tabs and a full-image dialog. Audio is phase 2 and is deliberately not included.
+First-pass flower walking tour with one real stop, a Leaflet 1.9.4 raster map with OpenStreetMap tiles, Google walking directions, accessible photo/illustration tabs and a full-image dialog. Audio is phase 2 and is deliberately not included.
 
 Build with `python sources/wollstonecraft/build.py`. No package installation required. The HTML embeds both optimised images so the guide remains viewable in a downloaded copy; maps and directions require an internet connection. The original uploads are not included in the repository.
 
@@ -25,4 +25,6 @@ Use original photos in ZIPs. Take an overall tree/shrub view, flower close-up, a
 - https://www.rhs.org.uk/plants/62796/prunus-%C3%97-blireana-d/details
 - https://landscapeplants.oregonstate.edu/plants/prunus-blireiana
 
-These support candidate plant characteristics, not definitive identification of the photographed specimen. Map attribution remains visible inside the OpenStreetMap embed.
+These support candidate plant characteristics, not definitive identification of the photographed specimen. Map attribution remains visible inside the Leaflet map.
+
+Leaflet 1.9.4 JS/CSS are vendored from unpkg.com, with the upstream BSD-2-Clause licence. Tiles load on demand only; no prefetch, bulk download or offline tile cache. The map uses a numbered HTML marker and needs no WebGL.

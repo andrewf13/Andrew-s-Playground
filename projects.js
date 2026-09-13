@@ -12,7 +12,7 @@ window.PROJECTS = [
   "line2": "IN BLOOM",
   "year": "2026",
   "number": "10",
-  "bytes": 1115675
+  "bytes": 1278608
 },
 {
   "id": "everest-1996",
