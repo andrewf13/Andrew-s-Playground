@@ -10,6 +10,7 @@ No account or installation needed.
 
 | Project | What’s inside |
 | --- | --- |
+| [Wollstonecraft in Bloom](https://andrewf13.github.io/Andrew-s-Playground/artifacts/wollstonecraft-in-bloom.html) | A neighbourhood flower walk: one mapped Hazelbank Road stop, Andrew’s photograph, an annotated botanical illustration and walking directions. |
 | [Everest 1996: Into the Storm](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=everest-1996) | A guided ascent through the Khumbu Icefall to the summit, followed by the 10–11 May storm and rescue efforts, with optional sound and source notes. |
 | [Singapore, Andrew’s Way](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=singapore-local) | Explore a colourful voxel island with Changi jets, Marina Bay landmarks and twelve places, including Andrew’s food picks, Botanic Gardens and Night Safari. |
 | [Shield Dojo](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=shield-dojo) | An Amiga-inspired karate arcade. Deflect bouncing balls, sharpen your timing and climb from white belt to Legend. |
@@ -27,6 +28,8 @@ No account or installation needed.
 - Turn on sound inside the project, and use **Fullscreen** for a closer look.
 - Select **HTML ↓** to download a copy you can open in your browser offline.
 - Use **← Playground** to return to the collection.
+
+The Wollstonecraft flower guide’s map and walking directions need an internet connection; its photos and notes are included in the HTML download.
 
 The larger 3D scenes are best enjoyed on a desktop or tablet with a browser that supports WebGL. The historical dioramas are stylised interpretations; their source notes explain the simplifications.
 

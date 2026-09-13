@@ -1,5 +1,20 @@
 window.PROJECTS = [
 {
+  "id": "wollstonecraft-in-bloom",
+  "title": "Wollstonecraft in Bloom",
+  "category": "Travel",
+  "kind": "Neighbourhood flower walk",
+  "edition": "Spring field guide · First stop",
+  "description": "Find pink blossom on Hazelbank Road with a walking map, Andrew’s photograph and a botanical illustration. The first stop of a growing local flower tour.",
+  "controls": "Map · Photos · Field guide",
+  "file": "artifacts/wollstonecraft-in-bloom.html",
+  "line1": "WOLLSTONECRAFT",
+  "line2": "IN BLOOM",
+  "year": "2026",
+  "number": "10",
+  "bytes": 1115675
+},
+{
   "id": "everest-1996",
   "title": "Everest 1996: Into the Storm",
   "category": "History",
