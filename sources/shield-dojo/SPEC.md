@@ -1,6 +1,6 @@
 # Shield Dojo: Remastered — Product Spec
 
-**Status:** v0.2, approved (open questions resolved 4 Oct 2026) · **Owner:** Andrew · **Date:** 4 October 2026
+**Status:** v0.2, approved (open questions resolved 4 Oct 2026) · **Build:** M0 + M1 done (see README.md) · **Owner:** Andrew · **Date:** 4 October 2026
 **Target:** a playable entry in Andrew's Playground (`artifacts/shield-dojo-remastered.html`), built with three.js `WebGPURenderer` and TSL (Three Shading Language).
 **Predecessor:** `artifacts/shield-dojo.html` (Bounce Edition v3, Canvas 2D). Its belt ladder, five-hit run and offline single-file delivery carry over. Its controls do not: v3 guards left/right and picks the height for you. In Remastered, **you choose the height**.
 

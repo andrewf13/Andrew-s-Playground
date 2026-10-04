@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#10121f"><title>Shield Dojo: Remastered</title>
+<style>
+:root{color-scheme:dark;--ink:#10121f;--paper:#fff0ce;--gold:#f4c56b;--muted:#a5a6b6;--line:#333545;--red:#e56e78}
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;background:var(--ink);color:var(--paper);font-family:Consolas,'Courier New',monospace;-webkit-user-select:none;user-select:none}
+main{max-width:1040px;margin:0 auto;padding:22px 16px 16px;display:flex;flex-direction:column;gap:12px;min-height:100%}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:12px}.mark{font-size:30px;color:var(--gold)}
+h1{margin:0;font-size:20px;letter-spacing:4px}.eyebrow{font-size:11px;letter-spacing:2px;color:var(--muted)}
+button{font:inherit;color:var(--paper);background:#1b1d2e;border:1px solid var(--line);border-radius:4px;padding:8px 12px;min-height:40px;cursor:pointer;letter-spacing:1px}
+button:hover{border-color:var(--gold)}button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.hud{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.stat{background:#171928;border:1px solid var(--line);border-radius:4px;padding:6px 10px;min-width:0}
+.label{font-size:10px;letter-spacing:2px;color:var(--muted)}.value{font-size:20px;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.value small{font-size:13px;color:var(--gold)}
+.knots{letter-spacing:2px;color:var(--red)}.knots i{font-style:normal;opacity:.22}
+.beltchip{display:inline-block;width:14px;height:10px;border:1px solid #0006;vertical-align:middle;margin-right:6px}
+.arena{position:relative;width:100%;aspect-ratio:4/3;max-height:calc(100vh - 210px);margin:0 auto;border:2px solid #2a2c3f;border-radius:6px;overflow:hidden;background:#000;touch-action:none}
+@supports (aspect-ratio:4/3){.arena{width:min(100%,calc((100vh - 210px)*4/3))}}
+canvas{display:block;width:100%;height:100%}
+.floaters{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.floater{position:absolute;transform:translate(-50%,-50%);font-weight:bold;font-size:clamp(12px,2.2vw,18px);letter-spacing:1px;text-shadow:0 2px 0 #0009;animation:rise .9s ease-out forwards;white-space:nowrap}
+@keyframes rise{to{transform:translate(-50%,-160%);opacity:0}}
+.tag{position:absolute;right:8px;bottom:6px;font-size:10px;letter-spacing:1px;color:#ffffff88;pointer-events:none}
+.banner{position:absolute;left:0;right:0;top:18%;text-align:center;font-size:clamp(22px,5vw,44px);font-weight:bold;letter-spacing:6px;color:var(--gold);text-shadow:0 3px 0 #000a;pointer-events:none}
+.overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#0b0c16cc;padding:16px;overflow:auto}
+.overlay[hidden],.banner[hidden]{display:none}
+.dialog{max-width:520px;text-align:center}
+.overline{font-size:11px;letter-spacing:3px;color:var(--gold);margin-bottom:8px}
+.dialog h2{margin:0 0 12px;font-size:clamp(26px,6vw,46px);letter-spacing:3px;line-height:1.05}
+.dialog p{margin:0 0 14px;line-height:1.45;color:#e8dcc0;font-size:14px}
+.results{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 0 14px}.results[hidden]{display:none}
+.results div{background:#171928;border:1px solid var(--line);padding:6px;border-radius:4px}.results b{display:block;font-size:18px}
+.results span{font-size:10px;letter-spacing:1px;color:var(--muted)}
+.primary{background:var(--gold);color:#1a1408;border-color:var(--gold);font-weight:bold;padding:10px 22px}
+.foot{font-size:12px;color:var(--muted);line-height:1.6;text-align:center}
+kbd{border:1px solid var(--line);border-bottom-width:2px;border-radius:3px;padding:0 5px;font:inherit;color:var(--paper)}
+.touchOnly{display:none}@media(pointer:coarse){.touchOnly{display:inline}.keyOnly{display:none}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media(max-width:650px){main{padding:12px 12px 10px;gap:8px}h1{font-size:15px;letter-spacing:2px}.eyebrow{display:none}.hud{grid-template-columns:repeat(4,minmax(0,1fr))}.hud .optional{display:none}.value{font-size:16px}.arena{max-height:none}}
+</style></head><body><main>
+<header><div class="brand"><div class="mark" aria-hidden="true">守</div><div><h1>SHIELD DOJO</h1><div class="eyebrow">REMASTERED · GREYBOX BUILD M1</div></div></div>
+<button id="pause" aria-label="Pause game">❚❚</button></header>
+<div class="hud">
+ <div class="stat"><div class="label">SCORE</div><div class="value" id="score">000000</div></div>
+ <div class="stat"><div class="label">STREAK</div><div class="value"><span id="streak">0</span> <small id="mult">×1</small></div></div>
+ <div class="stat"><div class="label">BELT</div><div class="value"><span class="beltchip" id="beltchip"></span><span id="belt">WHITE</span></div></div>
+ <div class="stat"><div class="label">LIVES</div><div class="value knots" id="lives"></div></div>
+ <div class="stat optional"><div class="label">HI</div><div class="value" id="best">000000</div></div>
+</div>
+<div class="arena" id="arena">
+ <canvas id="game" aria-label="Shield Dojo play area. Up and down raise or lower the shield, left and right turn it to face incoming balls, Space for kiai."></canvas>
+ <div class="floaters" id="floaters"></div>
+ <div class="banner" id="banner" hidden></div>
+ <span class="tag" id="tag"></span>
+ <div class="overlay" id="overlay"><div class="dialog">
+  <div class="overline" id="overline">READ THE BALL. MATCH ITS HEIGHT.</div>
+  <h2 id="heading">STAND YOUR<br>GROUND.</h2>
+  <p id="message">Balls fly in from both sides at head, chest and knee height. Hold <b>up</b> or <b>down</b> to raise or lower your shield. Let go and it returns to the middle. Turn <b>left</b> or <b>right</b> to face the ball. Press <b>kiai</b> as it hits for a Perfect.</p>
+  <div class="results" id="results" hidden></div>
+  <button class="primary" id="start">START</button>
+ </div></div>
+</div>
+<div class="foot"><span class="keyOnly"><kbd>W</kbd><kbd>S</kbd> / <kbd>↑</kbd><kbd>↓</kbd> height · <kbd>A</kbd><kbd>D</kbd> / <kbd>←</kbd><kbd>→</kbd> face · <kbd>Space</kbd> kiai · <kbd>P</kbd> pause · gamepad supported</span><span class="touchOnly">Hold your thumb on a side at the height to guard · second finger taps kiai</span><br>Five hits end your run.</div>
+<div class="sr" aria-live="polite" id="status"></div>
+</main>
+<!-- THREE -->
+<!-- APP -->
+</body></html>
