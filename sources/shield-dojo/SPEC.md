@@ -1,6 +1,6 @@
 # Shield Dojo: Remastered — Product Spec
 
-**Status:** Draft v0.1 for review · **Owner:** Andrew · **Date:** 4 October 2026
+**Status:** v0.2, approved (open questions resolved 4 Oct 2026) · **Owner:** Andrew · **Date:** 4 October 2026
 **Target:** a playable entry in Andrew's Playground (`artifacts/shield-dojo-remastered.html`), built with three.js `WebGPURenderer` and TSL (Three Shading Language).
 **Predecessor:** `artifacts/shield-dojo.html` (Bounce Edition v3, Canvas 2D). Its belt ladder, five-hit run and offline single-file delivery carry over. Its controls do not: v3 guards left/right and picks the height for you. In Remastered, **you choose the height**.
 
@@ -70,7 +70,7 @@ A run lasts until five hits. A strong white-belt run should take 60–90 seconds
 | Pause | — | P / Esc | Start | Pause button |
 | Era Dial | — | Tab | Select / Back | Toggle in HUD |
 
-**Release returns to chūdan.** This is the "held stance" model. A sticky model, where the stance stays until you change it, would be easier, but the held model is better on a real joystick, puts tension in every ball and suits the karate fiction. It is open question Q1.
+**Release returns to chūdan** (decided, Q1). This is the "held stance" model: it suits a real joystick, puts tension in every ball and fits the karate fiction. A sticky stance, which stays until you change it, is available only as an assist (§10). **The player always chooses facing** (decided, Q2); the shield never turns on its own.
 
 Touch is the one input that is fully analog: your finger's position *is* the shield, snapped to the nearest of the three bands.
 
@@ -221,7 +221,7 @@ The dial is a three-position switch in the HUD and on Tab. **Gameplay is identic
 
 | Setting | What you see |
 | --- | --- |
-| **1989** | Internal render at **320 × 256 (PAL lowres)**, nearest-neighbour upscale to 4:3. Output is quantised to a **32-colour palette drawn from the Amiga's 12-bit (4,096-colour) space** with ordered Bayer dithering. Copper bars, palette-cycling lanterns, 4-channel audio. Optional CRT (scanlines, slight barrel, phosphor bloom). |
+| **1989** *(default on first launch; the dial pulses once to invite a switch)* | Internal render at **320 × 256 (PAL lowres)**, nearest-neighbour upscale to 4:3. Output is quantised to a **32-colour palette drawn from the Amiga's 12-bit (4,096-colour) space** with ordered Bayer dithering. Copper bars, palette-cycling lanterns, 4-channel audio. Optional CRT (scanlines, slight barrel, phosphor bloom). |
 | **1993** | The "AGA" middle step: 640 × 512, 256 colours, softer dithering, light bloom. A nod to the A1200. |
 | **Today** | Full-resolution three.js scene: toon-lit karateka with rim light, lacquer and metal shield material, volumetric god-rays, real-time floor reflections, GPU-particle petals/rain/sparks, bloom, filmic grade. Same camera and framing as 1989. |
 
@@ -355,12 +355,12 @@ Online leaderboards, multiplayer / versus, a story mode, character customisation
 
 ---
 
-## 16. Open questions
+## 16. Decisions log
 
-| # | Question | Recommendation |
+| # | Question | Decision |
 | --- | --- | --- |
-| Q1 | Held stance (release → chūdan) or sticky stance? | **Held** by default, sticky as an assist |
-| Q2 | Should the player choose facing, or should the shield auto-face the nearest ball and leave only height to the player? | **Player chooses.** Auto-face halves the skill ceiling; it could be a "Beginner" toggle |
-| Q3 | Karateka as embedded GLB or procedural geometry? | Decide in M0 on file-size budget |
+| Q1 | Held stance or sticky stance? | **Held**: releasing returns to chūdan. Sticky is an assist only |
+| Q2 | Player-chosen facing or auto-face? | **Player chooses** facing |
+| Q3 | Karateka as embedded GLB or procedural geometry? | *Open*: decide in M0 on file-size budget |
 | Q4 | Default era on first launch? | **1989**, with the dial pulsing once to invite the switch |
-| Q5 | Name: "Shield Dojo: Remastered" vs a new title? | Keep the Shield Dojo name for continuity with v3 |
+| Q5 | Name? | **Shield Dojo: Remastered**; v3 stays listed as **Shield Dojo Classic** |
