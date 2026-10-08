@@ -10,6 +10,7 @@ No account or installation needed.
 
 | Project | What’s inside |
 | --- | --- |
+| [The Long Fall: Milky Way meets Andromeda](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=the-long-fall) | A five-minute cinematic simulation of our galaxy colliding with Andromeda over 4.5 billion years, computed live from gravity, with a generative orchestral score and science notes. |
 | [Wollstonecraft in Bloom](https://andrewf13.github.io/Andrew-s-Playground/artifacts/wollstonecraft-in-bloom.html) | A neighbourhood flower walk: one mapped Hazelbank Road stop, Andrew’s photograph, an annotated botanical illustration and walking directions. |
 | [Everest 1996: Into the Storm](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=everest-1996) | A guided ascent through the Khumbu Icefall to the summit, followed by the 10–11 May storm and rescue efforts, with optional sound and source notes. |
 | [Singapore, Andrew’s Way](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=singapore-local) | Explore a colourful voxel island with Changi jets, Marina Bay landmarks and twelve places, including Andrew’s food picks, Botanic Gardens and Night Safari. |
