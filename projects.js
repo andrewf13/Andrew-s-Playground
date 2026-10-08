@@ -1,5 +1,20 @@
 window.PROJECTS = [
 {
+  "id": "the-long-fall",
+  "title": "The Long Fall: Milky Way meets Andromeda",
+  "category": "Space",
+  "kind": "Cinematic simulation",
+  "edition": "4.5 billion years from now",
+  "description": "A five-minute film of our galaxy colliding with Andromeda, computed live from gravity, with a generative orchestral score. Follow the Sun through the crash.",
+  "controls": "WebGL · Sound · Drag",
+  "file": "artifacts/the-long-fall.html",
+  "line1": "THE LONG",
+  "line2": "FALL",
+  "year": "+4.5 Gyr",
+  "number": "11",
+  "bytes": 76745
+},
+{
   "id": "wollstonecraft-in-bloom",
   "title": "Wollstonecraft in Bloom",
   "category": "Travel",

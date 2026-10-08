@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="A five-minute cinematic simulation of the Milky Way and Andromeda galaxies colliding over the next 4.5 billion years, with a generative score.">
+<title>The Long Fall — Milky Way meets Andromeda</title>
+<style>
+:root{--ink:#f4efe6;--dim:#a9a49b;--gold:#e9c88f;--cool:#a9c7ff;--line:rgba(244,239,230,.18);--serif:"Didot","Bodoni 72","Bodoni MT","Playfair Display","Iowan Old Style","Palatino Linotype",Georgia,serif;--sans:"Helvetica Neue","Avenir Next",Arial,sans-serif}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html,body{margin:0;height:100%;background:#000;color:var(--ink);font-family:var(--sans);overflow:hidden;-webkit-font-smoothing:antialiased}
+canvas#view{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+canvas#view.dragging{cursor:grabbing}
+button,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* cinema layers */
+#fade{position:fixed;inset:0;background:#000;pointer-events:none;opacity:1}
+.bar{position:fixed;left:0;right:0;height:var(--bar,0px);background:#000;pointer-events:none;transition:height 1.6s cubic-bezier(.6,0,.2,1);z-index:2}
+.bar.top{top:0}.bar.bottom{bottom:0}
+#sky{position:fixed;left:0;right:0;bottom:0;height:34vh;pointer-events:none;opacity:0}
+#sky svg{position:absolute;inset:auto 0 0 0;width:100%;height:100%}
+#labels{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.marker{position:absolute;left:0;top:0;transform:translate(-50%,-50%);opacity:0;transition:opacity .6s}
+.marker i{display:block;width:26px;height:26px;border:1px solid var(--gold);border-radius:50%;box-shadow:0 0 12px rgba(233,200,143,.5);animation:pulse 2.4s ease-in-out infinite}
+.marker b{position:absolute;left:22px;top:-18px;white-space:nowrap;font:600 10px/1.3 var(--sans);letter-spacing:.24em;color:var(--gold);text-shadow:0 0 6px #000}
+.marker b small{display:block;font-weight:400;letter-spacing:.12em;color:var(--dim)}
+.marker.galaxy i{width:8px;height:8px;border:0;background:var(--cool);box-shadow:none;animation:none;opacity:.7}
+.marker.galaxy b{color:var(--cool);left:14px;top:-7px}
+@keyframes pulse{50%{transform:scale(1.25);opacity:.55}}
+
+/* type */
+#hud{position:fixed;top:calc(var(--bar,0px) + 18px);left:24px;right:24px;display:flex;justify-content:space-between;align-items:flex-start;gap:24px;pointer-events:none;opacity:0;transition:opacity 1s;z-index:3}
+#chapter{font:600 11px/1.4 var(--sans);letter-spacing:.32em;text-transform:uppercase;color:var(--dim)}
+#chapter span{color:var(--gold);margin-right:.8em}
+.readouts{display:grid;grid-template-columns:auto auto;gap:4px 16px;text-align:right;font-variant-numeric:tabular-nums}
+.readouts dt{font:600 9px/1.6 var(--sans);letter-spacing:.26em;color:var(--dim);text-transform:uppercase;align-self:center}
+.readouts dd{margin:0;font:400 15px/1.3 var(--sans);letter-spacing:.06em;min-width:9.5em}
+.readouts dd.big{font-family:var(--serif);font-size:24px;letter-spacing:.02em;color:var(--gold)}
+#card{position:fixed;inset:0;display:grid;place-content:center;text-align:center;pointer-events:none;z-index:3}
+#card .num{display:block;font:600 12px/1 var(--sans);letter-spacing:.6em;color:var(--gold);margin-bottom:22px;opacity:0;transition:opacity 1.2s}
+#card h2{margin:0;font:400 clamp(40px,8vw,104px)/1 var(--serif);letter-spacing:.06em;text-transform:uppercase;opacity:0;filter:blur(12px);transition:opacity 1.4s,filter 1.8s,letter-spacing 6s cubic-bezier(.2,.6,.2,1)}
+#card.show .num{opacity:1}#card.show h2{opacity:1;filter:blur(0);letter-spacing:.14em}
+#caption{position:fixed;left:50%;bottom:calc(var(--bar,0px) + 92px);transform:translateX(-50%);width:min(860px,calc(100% - 40px));margin:0;text-align:center;pointer-events:none;z-index:3}
+#caption .eyebrow{display:block;font:600 10px/1 var(--sans);letter-spacing:.42em;color:var(--gold);margin-bottom:14px;min-height:10px}
+#caption .text{display:block;font:400 clamp(19px,2.3vw,30px)/1.38 var(--serif);text-wrap:balance;text-shadow:0 1px 18px rgba(0,0,0,.9),0 0 3px rgba(0,0,0,.8)}
+#caption::before{content:'';position:absolute;inset:-40px -80px;z-index:-1;background:radial-gradient(closest-side,rgba(0,0,0,.55),rgba(0,0,0,0));opacity:0;transition:opacity 1s}#caption.show::before{opacity:1}
+#caption>span{opacity:0;transform:translateY(10px);transition:opacity 1s,transform 1.4s cubic-bezier(.2,.6,.2,1)}
+#caption.show>span{opacity:1;transform:none}
+body.no-cc #caption{display:none}
+
+/* postscript & end */
+#post{position:fixed;inset:0;display:grid;place-content:center;padding:40px 24px;pointer-events:none;opacity:0;transition:opacity 1.6s;z-index:3}
+#post.show{opacity:1}
+#post .wrap{max-width:720px}
+#post h3{font:600 11px/1 var(--sans);letter-spacing:.5em;color:var(--gold);margin:0 0 28px}
+#post ol{list-style:none;margin:0;padding:0;display:grid;gap:20px}
+#post li{display:grid;grid-template-columns:72px 1fr;gap:18px;font:400 clamp(16px,1.8vw,21px)/1.45 var(--serif);opacity:0;transform:translateY(8px);transition:opacity 1.2s,transform 1.2s}
+#post li b{font:600 13px/1.9 var(--sans);letter-spacing:.2em;color:var(--cool)}
+#post li.on{opacity:1;transform:none}
+#post p{font:italic 400 clamp(18px,2vw,24px)/1.45 var(--serif);margin:34px 0 0;opacity:0;transition:opacity 1.6s}
+#post p.on{opacity:1}
+#end{position:fixed;left:50%;bottom:calc(var(--bar,0px) + 96px);transform:translateX(-50%);display:flex;gap:12px;z-index:5}
+.btn{border:1px solid var(--line);background:rgba(10,10,14,.55);backdrop-filter:blur(8px);padding:12px 20px;letter-spacing:.22em;font-size:11px;font-weight:600;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:border-color .3s,background .3s}
+.btn:hover{border-color:var(--gold)}
+.btn.primary{background:var(--ink);color:#000;border-color:var(--ink)}
+.btn.primary:hover{background:var(--gold);border-color:var(--gold)}
+
+/* start screen */
+#start{position:fixed;inset:0;z-index:10;display:grid;align-content:center;justify-items:center;text-align:center;padding:24px;background:radial-gradient(ellipse at center,rgba(0,0,0,0) 0,rgba(0,0,0,.55) 70%);transition:opacity 1.4s}
+#start.leaving{opacity:0;pointer-events:none}
+#start .kicker{font:600 11px/1.6 var(--sans);letter-spacing:.5em;color:var(--gold);margin:0 0 26px;text-transform:uppercase}
+#start h1{margin:0;font:400 clamp(48px,10vw,132px)/.92 var(--serif);letter-spacing:.08em;text-transform:uppercase}
+#start h1 em{display:block;font-style:normal;font-size:.3em;line-height:1.5;letter-spacing:.42em;margin-top:.7em;color:var(--dim)}
+#start .lede{max-width:560px;margin:34px auto 34px;font:400 clamp(16px,1.7vw,19px)/1.6 var(--serif);color:#d8d2c7}
+#start .actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+#start .meta{margin-top:26px;font-size:11px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase}
+#start .meta a{color:var(--dim)}
+
+/* buffering */
+#buffer{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);font:600 11px/1 var(--sans);letter-spacing:.32em;color:var(--dim);text-transform:uppercase;z-index:6;pointer-events:none;background:rgba(0,0,0,.5);padding:14px 18px}
+
+/* controls */
+#controls{position:fixed;left:0;right:0;bottom:0;z-index:7;padding:18px 22px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(transparent,rgba(0,0,0,.72));display:flex;flex-direction:column;gap:10px;transition:opacity .6s,transform .6s}
+body.idle #controls{opacity:0;transform:translateY(12px)}
+body.idle{cursor:none}
+.track{position:relative;height:22px}
+#scrub{position:absolute;inset:0;width:100%;margin:0;appearance:none;-webkit-appearance:none;background:transparent;cursor:pointer}
+#scrub::-webkit-slider-runnable-track{height:2px;background:linear-gradient(90deg,var(--gold) var(--p,0%),rgba(255,255,255,.22) var(--p,0%))}
+#scrub::-moz-range-track{height:2px;background:linear-gradient(90deg,var(--gold) var(--p,0%),rgba(255,255,255,.22) var(--p,0%))}
+#scrub::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--ink);margin-top:-5px;border:0}
+#scrub::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:var(--ink);border:0}
+#ticks{position:absolute;inset:0;pointer-events:none}
+#ticks i{position:absolute;top:6px;width:1px;height:10px;background:rgba(255,255,255,.4)}
+.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.row .spacer{flex:1}
+.ctl{background:none;border:1px solid transparent;padding:7px 10px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;border-radius:2px;color:#e7e2d9}
+.ctl:hover{border-color:var(--line)}
+.ctl[aria-pressed="true"]{color:var(--gold)}
+#play{width:44px;height:36px;font-size:16px;letter-spacing:0;border-color:var(--line)}
+#clock{font-size:12px;letter-spacing:.12em;color:var(--dim);font-variant-numeric:tabular-nums;min-width:96px}
+#chapters{background:rgba(0,0,0,.5);border:1px solid var(--line);padding:7px 8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;border-radius:2px}
+#chapters option{background:#111;color:#eee}
+#vol{width:80px;accent-color:#e9c88f}
+
+/* notes */
+dialog{max-width:min(720px,calc(100% - 32px));max-height:min(86vh,900px);background:#0b0c10;color:var(--ink);border:1px solid var(--line);padding:0;border-radius:4px}
+dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px)}
+dialog .inner{padding:30px 32px;overflow:auto;max-height:min(86vh,900px);font:400 15px/1.65 var(--serif)}
+dialog h2{font:400 32px/1.1 var(--serif);margin:0 0 6px;letter-spacing:.04em}
+dialog h3{font:600 11px/1 var(--sans);letter-spacing:.32em;color:var(--gold);text-transform:uppercase;margin:28px 0 10px}
+dialog p,dialog li{color:#d8d2c7}dialog ul{padding-left:18px;margin:0}dialog li{margin:6px 0}
+dialog a{color:var(--cool)}
+dialog .close{position:sticky;top:0;float:right;margin:-8px -10px 0 0}
+@media (max-width:720px){
+ #hud{left:14px;right:14px;top:calc(var(--bar,0px) + 12px);flex-direction:column;gap:8px}
+ .readouts{text-align:left;grid-template-columns:auto 1fr}
+ .readouts dd{min-width:0;font-size:13px}.readouts dd.big{font-size:19px}
+ #caption{bottom:calc(var(--bar,0px) + 128px)}
+ .hide-sm{display:none}
+ #controls{padding:12px 12px calc(10px + env(safe-area-inset-bottom))}
+ #post li{grid-template-columns:52px 1fr;gap:12px}
+ #end{bottom:150px;flex-direction:column}
+}
+@media (prefers-reduced-motion:reduce){.marker i{animation:none}#card h2{transition:opacity 1s}}
+</style>
+</head>
+<body>
+<canvas id="view" aria-label="Simulation of the Milky Way and Andromeda galaxies" role="img"></canvas>
+<div id="sky" aria-hidden="true"><svg viewBox="0 0 1600 340" preserveAspectRatio="none"><defs><linearGradient id="glow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a1830" stop-opacity="0"/><stop offset=".6" stop-color="#3a2030" stop-opacity=".35"/><stop offset="1" stop-color="#5a2a22" stop-opacity=".55"/></linearGradient></defs><rect width="1600" height="340" fill="url(#glow)"/><path fill="#030304" d="M0 250 L90 236 L170 244 L260 214 L330 222 L420 198 L470 206 L560 186 L640 210 L720 204 L800 226 L880 214 L960 232 L1040 218 L1110 190 L1170 198 L1240 176 L1300 192 L1380 212 L1460 206 L1540 226 L1600 220 L1600 340 L0 340Z"/><path fill="#000" d="M0 296 L120 280 L240 290 L380 270 L520 284 L700 266 L860 282 L1020 270 L1200 286 L1360 272 L1500 284 L1600 278 L1600 340 L0 340Z"/></svg></div>
+<div id="labels" aria-hidden="true">
+ <div class="marker" id="m-sun"><i></i><b>THE SUN<small id="m-sun-sub">YOU ARE HERE</small></b></div>
+ <div class="marker galaxy" id="m-mw"><i></i><b>MILKY WAY</b></div>
+ <div class="marker galaxy" id="m-m31"><i></i><b>ANDROMEDA · M31</b></div>
+</div>
+<div id="fade"></div>
+<i class="bar top" aria-hidden="true"></i><i class="bar bottom" aria-hidden="true"></i>
+<header id="hud" aria-hidden="true">
+ <div id="chapter"></div>
+ <dl class="readouts">
+  <dt>Time from now</dt><dd class="big" id="r-time">Today</dd>
+  <dt>Between galaxies</dt><dd id="r-dist">—</dd>
+  <dt>Closing speed</dt><dd id="r-speed">—</dd>
+  <dt>Sun from centre</dt><dd id="r-sun">—</dd>
+ </dl>
+</header>
+<div id="card" aria-hidden="true"><span class="num"></span><h2></h2></div>
+<p id="caption" aria-live="polite"><span class="eyebrow"></span><span class="text"></span></p>
+<div id="post" aria-live="polite">
+ <div class="wrap">
+  <h3>POSTSCRIPT · FATE, REVISED</h3>
+  <ol>
+   <li><b>2012</b><span>Hubble measured Andromeda’s faint sideways drift. A head-on collision in about four billion years looked all but certain.</span></li>
+   <li><b>2025</b><span>Adding Gaia data and the pull of neighbouring galaxies, one study found the odds of a merger within ten billion years were closer to a coin flip.</span></li>
+   <li><b>2026</b><span>A re-analysis with sharper Gaia measurements raised them to about 90% — with the merger perhaps a little later than shown here.</span></li>
+  </ol>
+  <p>The sky is still being measured. Finding out is the most human part of the story.</p>
+ </div>
+</div>
+<div id="end" hidden><button class="btn primary" id="again" type="button">Watch again</button><button class="btn" id="explore" type="button">Explore freely</button></div>
+<div id="buffer" hidden>Simulating gravity…</div>
+
+<section id="start" aria-labelledby="title">
+ <p class="kicker">A film in eight movements · 4.5 billion years · About 5 minutes</p>
+ <h1 id="title">The Long Fall<em>The Milky Way meets Andromeda</em></h1>
+ <p class="lede">Two galaxies, 2.5 million light-years apart, are falling toward each other. Fast-forward through deep time to watch our galaxy — and our Sun — live through the collision.</p>
+ <div class="actions"><button class="btn primary" id="go-sound" type="button">Begin with sound</button><button class="btn" id="go-quiet" type="button">Begin in silence</button></div>
+ <p class="meta">Headphones recommended · Drag to look around · <a href="#" id="start-notes">Science notes</a></p>
+</section>
+
+<nav id="controls" aria-label="Film controls" hidden>
+ <div class="track"><div id="ticks"></div><input id="scrub" type="range" min="0" max="290" step="0.1" value="0" aria-label="Film position"></div>
+ <div class="row">
+  <button class="ctl" id="play" type="button" aria-label="Pause">❚❚</button>
+  <span id="clock">0:00 / 4:50</span>
+  <select id="chapters" aria-label="Jump to chapter"></select>
+  <span class="spacer"></span>
+  <button class="ctl" id="sound" type="button" aria-pressed="false">Sound</button>
+  <input id="vol" class="hide-sm" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
+  <button class="ctl" id="cc" type="button" aria-pressed="true" title="Captions (C)">CC</button>
+  <button class="ctl hide-sm" id="free" type="button" aria-pressed="false" title="Keep your camera angle">Free camera</button>
+  <button class="ctl" id="notes-btn" type="button">Notes</button>
+  <button class="ctl" id="fs" type="button">Full screen</button>
+ </div>
+</nav>
+
+<dialog id="notes" aria-labelledby="notes-title"><div class="inner">
+ <button class="ctl close" type="button" id="notes-close">Close ✕</button>
+ <h2 id="notes-title">Science notes</h2>
+ <p>The Long Fall is a live gravitational simulation run in your browser, edited like a film. Everything you see is computed — no stock footage, no recorded music.</p>
+ <h3>The forecast</h3>
+ <ul>
+  <li>Andromeda (M31) is about 2.5 million light-years away and approaching the Milky Way at roughly 110 km/s. Hubble proper-motion measurements in 2012 (van der Marel et al.) predicted a first close pass in about 4 billion years and a single merged galaxy about 6 billion years from now. <a href="https://science.nasa.gov/missions/hubble/nasas-hubble-shows-milky-way-is-destined-for-head-on-collision-with-andromeda-galaxy" target="_blank" rel="noopener">NASA</a></li>
+  <li>NASA’s 2012 sequence of the future night sky inspired chapter II. <a href="https://esahubble.org/images/opo1220b/" target="_blank" rel="noopener">ESA/Hubble</a></li>
+  <li>In June 2025 Sawala et al. (Nature Astronomy), using Hubble and Gaia data and including M33 and the Large Magellanic Cloud, found only about a 50% chance of a merger in the next 10 billion years. <a href="https://www.dur.ac.uk/news-events/latest-news/2025/06/new-study-casts-doubt-on-the-likelihood-of-milky-way-collision-with-andromeda/" target="_blank" rel="noopener">Durham University</a> · <a href="https://www.nationalgeographic.com/science/article/milky-way-andromeda-galaxy-collision-odds" target="_blank" rel="noopener">National Geographic</a></li>
+  <li>In April 2026 Wu et al. (The Astrophysical Journal Letters) re-ran the analysis with updated Gaia proper motions and found about a 90% merger probability in their fiducial model, with a median merger time near 6.5 billion years and a wide uncertainty range. <a href="https://iopscience.iop.org/article/10.3847/2041-8213/ae5799" target="_blank" rel="noopener">ApJL</a></li>
+  <li>Simulations suggest the Sun will probably survive the merger, likely thrown much farther from the centre than today (e.g. Cox &amp; Loeb 2008).</li>
+ </ul>
+ <h3>How the simulation works</h3>
+ <p>This is a restricted three-body model in the tradition of Toomre &amp; Toomre (1972). Each galaxy is a dark-matter halo plus bulge (Hernquist profiles: 1.5 and 1.9 trillion solar masses). The two centres follow their mutual gravity with a dynamical-friction drag, tuned so the first close pass falls at 4.0 billion years and the cores collide on the second plunge at 4.5 billion years. Up to 45,000 star, gas and dust particles then respond to both galaxies’ gravity with a leapfrog integrator in a background worker. Before 3.5 billion years the disks rotate rigidly, because tides are negligible while the galaxies are far apart.</p>
+ <h3>Deliberate simplifications</h3>
+ <ul>
+  <li>Particles do not attract one another, so there is no disk self-gravity, gas physics or black-hole growth. Starbursts are shown as brightened gas clouds near close passes.</li>
+  <li>The Triangulum galaxy (M33), the Magellanic Clouds and other satellites are omitted, though they matter for the real odds.</li>
+  <li>Orientations of the disks and the orbit are chosen to resemble the published forecasts, not fitted to them. The Sun is one particle on a near-circular orbit; its fate here is one plausible outcome.</li>
+  <li>The future night sky in chapter II is seen from the Sun’s simulated position, with an imagined horizon. Brightness, colour and the distant galaxy field in chapter VII are artistic.</li>
+ </ul>
+ <h3>Facts in the captions</h3>
+ <ul>
+  <li>Milky Way: 100–400 billion stars, about 100,000 light-years across; the Sun is about 26,000 light-years from the centre and orbits once every ~230 million years. Andromeda holds around a trillion stars.</li>
+  <li>Andromeda spans about 3° of sky — six full Moons. Its light left about 2.5 million years ago, around the time our genus, <i>Homo</i>, appeared.</li>
+  <li>The Sun brightens by roughly 10% per billion years; it begins to swell toward a red giant in about 5 billion years.</li>
+  <li>Sand-grain scale: the Sun is 1.39 million km across and the nearest star is 4.2 light-years away, a ratio of about 29 million to one — a 0.5 mm grain and another 14 km away.</li>
+ </ul>
+ <h3>Sound</h3>
+ <p>The score is synthesised live with the Web Audio API and follows the film: strings and a sub drone in D minor, a heartbeat that accelerates into the collision, and a resolution to D major as Milkomeda forms. Sources consulted 8 October 2026.</p>
+ <h3>Controls</h3>
+ <p>Space play/pause · ← → seek 5 s · M sound · C captions · F full screen · drag to look around, scroll or pinch to zoom.</p>
+</div></dialog>
+<!-- SIM -->
+<!-- AUDIO -->
+<!-- APP -->
+</body>
+</html>
