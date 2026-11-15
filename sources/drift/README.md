@@ -72,7 +72,7 @@ Rows don't wrap: at the first or last tile, Left or Right stays on that row.
 
 ### Why it's fast
 
-- It has no dependencies: no AndroidX, Compose or Leanback. The APK is about 80 KB.
+- It has no dependencies: no AndroidX, Compose or Leanback. The APK is about 340 KB, most of it the two optional clock fonts.
 - The app list loads once, off the main thread, and stays in memory. It reloads only when apps are installed or removed.
 - The window background is already the dusk gradient, so there is no white flash on cold start.
 - The video plays on a hardware `SurfaceView` and is **fully released whenever another app is on screen**. Drift never holds a decoder or bandwidth while SmartTube, Kodi or Tuner is playing. It also never requests audio focus, so Qobuz keeps playing on the home screen.
