@@ -7,6 +7,29 @@ no recommendation rows and no profiles.
 ![Layout mock-up](docs/preview.png)
 *Mock-up of the layout. On the TV the background is the moving aerial video and the tiles are each app's own banner.*
 
+## ⬇ Download
+
+**[Download Drift 2.0 (APK, 340 KB)](https://andrewf13.github.io/Andrew-s-Playground/downloads/drift-2.0.apk)**. Works on Android TV 9 or newer, including the NVIDIA Shield, Chromecast with Google TV and most Google TV boxes.
+
+**Install it using only the TV remote:**
+
+1. On the TV, install **Downloader** (by AFTVnews) from the Play Store.
+2. Open Downloader and type this address:
+   `andrewf13.github.io/Andrew-s-Playground/downloads/drift-2.0.apk`
+3. When Android asks, allow Downloader to install unknown apps, then choose **Install**.
+4. Open **Drift**. Its *Home screen* wizard shows you how to make the Home button open Drift.
+   - Choose **Turn on Home button helper**.
+   - Switch on **Drift Home button** in Accessibility.
+   - Press Back.
+5. Optional:
+   - In Drift's Settings (the ≡ tile), set **Now playing** to show what your music app is playing.
+   - Set **Fade to → Dim when music plays** for night listening.
+
+Each TV keeps its own settings. There's no account, and nothing is shared between devices or sent anywhere.
+For a newer version, download and install again over the top; your settings are kept.
+
+[See it in action on the Playground →](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=drift-tv-launcher)
+
 ## What it does
 
 | | |
@@ -54,7 +77,7 @@ Rows don't wrap: at the first or last tile, Left or Right stays on that row.
 - The window background is already the dusk gradient, so there is no white flash on cold start.
 - The video plays on a hardware `SurfaceView` and is **fully released whenever another app is on screen**. Drift never holds a decoder or bandwidth while SmartTube, Kodi or Tuner is playing. It also never requests audio focus, so Qobuz keeps playing on the home screen.
 
-## Install
+## Install with a computer (optional)
 
 From a PC on the same network, with **Developer options → Network debugging** turned on for the TV:
 
