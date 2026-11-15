@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0b0f17"><title>Drift — A Quiet Home Screen for Android TV</title>
+<meta name="description" content="Drift is a minimal Android TV launcher: Apple aerial video behind a thin clock, one row of favourites, now playing for music, and a near-black night mode.">
+<style>
+:root{color-scheme:dark;--bg:#0b0f17;--surface:#141a24;--line:#283240;--text:#f1eee7;--muted:#9eaab8;--cyan:#80dacb;--accent:#ffa76e}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.6}
+a{color:inherit}a:focus-visible,button:focus-visible{outline:3px solid var(--cyan);outline-offset:4px}
+main{max-width:1180px;margin:auto;padding:0 32px 60px}
+.eyebrow{font:12px 'Courier New',monospace;letter-spacing:1.8px;color:var(--accent);margin:0 0 16px;text-transform:uppercase}
+.hero{display:grid;grid-template-columns:1fr 1.25fr;gap:44px;align-items:center;padding:58px 0 46px}
+h1{font-size:clamp(46px,6.5vw,84px);font-weight:300;letter-spacing:-3px;line-height:1;margin:0}
+h1 span{color:var(--muted)}
+.lede{font-size:18px;color:#b9c3cf;margin:22px 0 28px;max-width:34ch}
+.buttons{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 20px;border-radius:40px;font-size:15px;font-weight:bold;text-decoration:none;border:1px solid var(--line)}
+.btn.primary{background:var(--cyan);color:#10201d;border-color:var(--cyan)}
+.btn small{font-weight:normal;opacity:.7;font-size:12px}
+.meta{font:12px 'Courier New',monospace;color:var(--muted);margin-top:18px;letter-spacing:.5px}
+
+/* ---------- the TV mock ---------- */
+.tv{position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#000;box-shadow:0 30px 70px #0009,0 0 0 1px #2a3240;container-type:inline-size;font-family:'Helvetica Neue',Roboto,Arial,sans-serif}
+.sky{position:absolute;inset:-6%;background:linear-gradient(180deg,#1f3a5c 0%,#5f7fa3 34%,#d7a57d 52%,#b9774f 56%,#1b2738 60%,#0d1521 100%);animation:drift 40s ease-in-out infinite alternate}
+.sky:after{content:'';position:absolute;left:0;right:0;top:56%;height:9%;background:radial-gradient(ellipse at 25% 100%,#16202d 55%,transparent 56%),radial-gradient(ellipse at 72% 100%,#1b2636 50%,transparent 51%)}
+@keyframes drift{from{transform:scale(1.04) translateX(-1.5%)}to{transform:scale(1.1) translateX(1.5%)}}
+@media (prefers-reduced-motion:reduce){.sky{animation:none}}
+.scrim{position:absolute;inset:0;background:linear-gradient(0deg,#000d 0%,#0004 42%,transparent 62%),linear-gradient(180deg,#0009,transparent 32%);transition:opacity 1s}
+.dim{position:absolute;inset:0;background:#000;opacity:0;transition:opacity 1.6s}
+.clockblock{position:absolute;left:6%;top:7.5%;transition:opacity 1s,transform 3s}
+.clock{font-size:8.6cqw;font-weight:100;letter-spacing:-.15cqw;line-height:1;text-shadow:0 .1cqw 1cqw #0008}
+.date{font-size:1.3cqw;letter-spacing:.3cqw;font-weight:600;opacity:.82;margin-top:.8cqw;padding-left:.3cqw;transition:opacity 1s}
+.np{display:flex;align-items:center;gap:1.4cqw;margin-top:2.6cqw;transition:opacity 1.2s}
+.art{width:5.4cqw;height:5.4cqw;border-radius:.6cqw;background:linear-gradient(135deg,#c08a52,#5a2f22 60%,#2a1a14);box-shadow:0 .6cqw 1.4cqw #0007}
+.np b{display:block;font-size:1.75cqw;font-weight:600}.np span{display:block;font-size:1.35cqw;opacity:.75;margin-top:.3cqw}
+.corner{position:absolute;right:6%;top:8.5%;text-align:right;font-size:1.25cqw;letter-spacing:.08cqw;transition:opacity 1s}
+.corner i{display:inline-block;width:.75cqw;height:.75cqw;border-radius:50%;background:#4be08a;margin-right:.7cqw;vertical-align:.1cqw}
+.corner div+div{opacity:.7;margin-top:.8cqw;letter-spacing:.15cqw}
+.rows{position:absolute;left:6%;right:6%;bottom:5.5%;transition:opacity 1s}
+.favs,.apps{display:flex;gap:2.3cqw}.apps{gap:1.5cqw;margin-top:.6cqw}
+.tile{flex:none;width:20.2cqw;height:11.4cqw;border-radius:1.4cqw;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:2cqw;opacity:.8;letter-spacing:.05cqw}
+.tile.f{opacity:1;transform:scale(1.1);box-shadow:0 0 0 .26cqw #fff,0 1.4cqw 3cqw #0009;margin:0 1cqw}
+.label{font-size:1.55cqw;font-weight:600;margin:1.7cqw 0 .9cqw .2cqw}
+.app{flex:none;width:13.3cqw;height:7.5cqw;border-radius:1cqw;background:linear-gradient(135deg,#ffffff4d,#ffffff1a);opacity:.78;display:flex;align-items:center;justify-content:center;font-size:1.3cqw;font-weight:600}
+.state-faded .rows,.state-faded .corner .net,.state-faded .scrim{opacity:0}
+.state-faded .clockblock{transform:translate(1.6cqw,1.2cqw)}
+.state-dim .rows,.state-dim .corner,.state-dim .date{opacity:0}
+.state-dim .dim{opacity:1}
+.state-dim .clock{opacity:.16;transition:opacity 1.6s}
+.state-dim .np{opacity:.32}
+.state-dim .clockblock{transform:translate(4cqw,6cqw)}
+.switch{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.switch button{border:1px solid var(--line);background:transparent;color:#c5cdd6;border-radius:30px;padding:9px 16px;font-size:13px}
+.switch button[aria-pressed=true]{background:var(--cyan);color:#10201d;border-color:var(--cyan)}
+.caption{text-align:center;font:12px 'Courier New',monospace;color:var(--muted);margin:10px 0 0}
+
+/* ---------- content ---------- */
+section{border-top:1px solid var(--line);padding:44px 0 8px}
+h2{font-size:30px;font-weight:500;letter-spacing:-.8px;margin:0 0 26px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.card{background:var(--surface);border:1px solid var(--line);padding:22px 22px 18px}
+.card h3{font-size:17px;margin:0 0 8px;font-weight:600}
+.card p{margin:0;color:#aab5c2;font-size:14.5px}
+.card .k{font:11px 'Courier New',monospace;color:var(--cyan);letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:10px}
+ol.steps{counter-reset:s;list-style:none;padding:0;margin:0;display:grid;gap:14px;max-width:820px}
+ol.steps li{counter-increment:s;position:relative;padding:16px 18px 16px 62px;background:var(--surface);border:1px solid var(--line);color:#c3ccd6;font-size:15px}
+ol.steps li:before{content:counter(s);position:absolute;left:18px;top:14px;width:28px;height:28px;border-radius:50%;border:1px solid var(--cyan);color:var(--cyan);display:flex;align-items:center;justify-content:center;font-size:14px}
+ol.steps b{color:var(--text)}
+code{font:13px 'Courier New',monospace;background:#0d131c;border:1px solid var(--line);padding:2px 6px;border-radius:4px;word-break:break-all}
+table{border-collapse:collapse;width:100%;max-width:820px;font-size:14.5px}
+td,th{border-bottom:1px solid var(--line);padding:11px 10px;text-align:left;vertical-align:top}th{font:11px 'Courier New',monospace;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;font-weight:normal}
+td:first-child{white-space:nowrap;color:var(--text)}td{color:#aab5c2}
+.notes{font-size:13px;color:var(--muted);max-width:820px}
+footer{max-width:1180px;margin:auto;padding:22px 32px 34px;border-top:1px solid var(--line);font:11px/1.7 'Courier New',monospace;color:var(--muted);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+@media (max-width:900px){.hero{grid-template-columns:1fr;gap:30px;padding-top:36px}.grid{grid-template-columns:1fr 1fr}}
+@media (max-width:600px){main{padding:0 16px 40px}footer{padding:20px 16px}.grid{grid-template-columns:1fr}h2{font-size:25px}}
+</style></head>
+<body>
+<main>
+ <div class="hero">
+  <div>
+   <p class="eyebrow">Android TV launcher · v2.0</p>
+   <h1>Drift<span>.</span></h1>
+   <p class="lede">A quiet home screen for Android TV. Apple’s aerial footage drifts behind a thin clock and one row of favourites. No ads, no recommendation rows.</p>
+   <div class="buttons">
+    <a class="btn primary" href="https://andrewf13.github.io/Andrew-s-Playground/downloads/drift-2.0.apk" download>Download APK <small>340 KB</small></a>
+    <a class="btn" href="https://github.com/andrewf13/Andrew-s-Playground/tree/main/sources/drift" target="_blank" rel="noopener">Source ↗</a>
+   </div>
+   <p class="meta">Android 9 or newer · Tested on NVIDIA Shield (2019) and Chromecast with Google TV</p>
+  </div>
+  <div>
+   <div class="tv state-home" id="tv" role="img" aria-label="Mock-up of the Drift home screen">
+    <div class="sky"></div><div class="scrim"></div><div class="dim"></div>
+    <div class="clockblock">
+     <div class="clock" id="clock">21:42</div>
+     <div class="date" id="date">SUNDAY 15 NOVEMBER</div>
+     <div class="np"><div class="art"></div><div><b>Dolores</b><span>Jesse Harris  •  If You Believed In Me</span></div></div>
+    </div>
+    <div class="corner"><div class="net"><i></i>Ethernet · 11 ms</div><div>NEW ZEALAND</div></div>
+    <div class="rows">
+     <div class="favs">
+      <div class="tile f" style="background:linear-gradient(135deg,#d7263d,#8e1b2b)">SmartTube</div>
+      <div class="tile" style="background:linear-gradient(135deg,#eef3f6,#c9d5dc);color:#1d2a33">Kodi</div>
+      <div class="tile" style="background:#111">Qobuz</div>
+      <div class="tile" style="background:linear-gradient(135deg,#232a36,#151a22)">Tuned</div>
+     </div>
+     <div class="label">SmartTube</div>
+     <div class="apps"><div class="app">VLC</div><div class="app">Browser</div><div class="app">⋮⋮</div><div class="app">☾</div><div class="app">≡</div></div>
+    </div>
+   </div>
+   <div class="switch" role="group" aria-label="Show a state of the home screen">
+    <button data-s="home" aria-pressed="true">Home</button>
+    <button data-s="faded" aria-pressed="false">Faded</button>
+    <button data-s="dim" aria-pressed="false">Night dim</button>
+   </div>
+   <p class="caption">Mock-up. On a TV, the background is real aerial video and tiles use each app’s own banner.</p>
+  </div>
+ </div>
+
+ <section aria-labelledby="f">
+  <h2 id="f">What it does</h2>
+  <div class="grid">
+   <div class="card"><span class="k">Background</span><h3>Apple aerials</h3><p>Streams the same Apple TV aerial footage as Aerial Dream, muted. The next clip buffers ahead for smooth changes. Playback stops the moment another app is in front.</p></div>
+   <div class="card"><span class="k">Home</span><h3>Your apps, nothing else</h3><p>Large favourites with their own TV banners, then everything else in one row. Hold OK to reorder, hide or add favourites.</p></div>
+   <div class="card"><span class="k">Setup</span><h3>No computer needed</h3><p>A first-run wizard makes the remote’s Home button open Drift through an optional accessibility helper, with no adb required.</p></div>
+   <div class="card"><span class="k">Music</span><h3>Now playing</h3><p>Track, artist, album and cover from Qobuz or any player. Long names scroll gently.</p></div>
+   <div class="card"><span class="k">Night</span><h3>Dim mode</h3><p>While an album plays, the screen fades to near-black with only a faint track and clock. The aerial stops, so the box isn’t decoding video while you listen.</p></div>
+   <div class="card"><span class="k">OLED</span><h3>Burn-in care</h3><p>The clock and text drift a little each minute, further once the screen has faded, and static text is dimmed. Drift keeps the screen awake at home, so your normal screensaver keeps working in other apps.</p></div>
+  </div>
+ </section>
+
+ <section aria-labelledby="i">
+  <h2 id="i">Install</h2>
+  <ol class="steps">
+   <li><b>Get the APK onto the TV.</b> Use an app like <i>Downloader</i> with this address: <code>andrewf13.github.io/Andrew-s-Playground/downloads/drift-2.0.apk</code>. Or from a computer: <code>adb install -r drift-2.0.apk</code></li>
+   <li><b>Open Drift.</b> The <b>Home screen</b> wizard appears. Choose <i>Turn on Home button helper</i>, switch on “Drift Home button” in Accessibility, then press Back.</li>
+   <li><b>Optional: now playing.</b> In Drift’s Settings, set <i>Now playing</i> to <i>Any player</i>. On Google TV, allow notification access when asked. On the Shield, the Home button helper covers it.</li>
+   <li><b>Optional: night listening.</b> Settings → <i>Fade to</i> → <i>Dim when music plays</i>.</li>
+  </ol>
+ </section>
+
+ <section aria-labelledby="r">
+  <h2 id="r">Remote</h2>
+  <table>
+   <tr><th>Button</th><th>On the home screen</th></tr>
+   <tr><td>OK</td><td>Open the app</td></tr>
+   <tr><td>Hold OK / Menu</td><td>App options: move, add to or remove from favourites, hide, app info, uninstall</td></tr>
+   <tr><td>Back</td><td>Close whatever is open, or return to the first favourite</td></tr>
+   <tr><td>Any button</td><td>On a faded or dimmed screen, brings everything back</td></tr>
+  </table>
+ </section>
+
+ <section aria-labelledby="n">
+  <h2 id="n">Good to know</h2>
+  <div class="notes">
+   <p><b>Aerials:</b> Drift plays Apple’s publicly hosted aerial videos over plain http, the way Aerial Dream does, because Android doesn’t trust that server’s certificate. You can also copy your own videos into <code>Android/data/com.drift.launcher/files/Aerials</code> to play them offline.</p>
+   <p><b>Accessibility helper:</b> it acts only when the built-in home screen appears, and it keeps only the player link from music notifications. It never reads what’s on screen and ignores other notifications.</p>
+   <p><b>Diagnostics:</b> the bottom of Drift’s Settings shows where the aerials came from and any recent crash.</p>
+   <p>Drift is an independent hobby project. It isn’t affiliated with Apple, Google, NVIDIA or Qobuz. It was built with AI, so expect a few rough edges.</p>
+  </div>
+ </section>
+</main>
+<footer><span>DRIFT · ANDREW’S PLAYGROUND</span><a href="https://github.com/andrewf13/Andrew-s-Playground/issues" target="_blank" rel="noopener">Feedback ↗</a></footer>
+<script>
+'use strict';
+const tv=document.getElementById('tv');
+for(const b of document.querySelectorAll('[data-s]'))b.addEventListener('click',()=>{
+ tv.className='tv state-'+b.dataset.s;
+ for(const o of document.querySelectorAll('[data-s]'))o.setAttribute('aria-pressed',String(o===b));
+});
+function tick(){const d=new Date();
+ document.getElementById('clock').textContent=d.getHours()+':'+String(d.getMinutes()).padStart(2,'0');
+ document.getElementById('date').textContent=d.toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long'}).replace(',','').toUpperCase();}
+tick();setInterval(tick,15000);
+</script>
+</body></html>

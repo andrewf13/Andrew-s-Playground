@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Apple's aerial CDN presents a certificate Android doesn't trust, so (like Aerial Dream) the
+         videos are fetched over plain http. Allowed everywhere because the CDN can redirect to other hosts. -->
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>

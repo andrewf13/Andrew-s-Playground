@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="guard_label">Drift Home button</string>
+    <string name="guard_summary">Makes the Home button open Drift, and shows what\'s playing</string>
+    <string name="guard_description">Makes the Home button open Drift instead of the built-in home screen: when the built-in home screen appears, Drift is brought back. It also lets Drift show what\'s playing (for example in Qobuz): when a music player posts its playback notification, Drift takes only the link to that player, to show the track and control playback. It never reads what\'s on screen, and ignores all other notifications.</string>
+</resources>
