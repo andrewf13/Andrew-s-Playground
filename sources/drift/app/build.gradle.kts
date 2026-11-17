@@ -11,8 +11,8 @@ android {
         applicationId = "com.drift.launcher"
         minSdk = 28          // Shield 2019 (Android 11) and Chromecast GTV (Android 12/14)
         targetSdk = 34
-        versionCode = 14
-        versionName = "2.0"
+        versionCode = 15
+        versionName = "2.1"
     }
 
     // Release signing key is NOT in this public repo. Supply it to build an APK that updates over
