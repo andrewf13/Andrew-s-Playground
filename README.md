@@ -10,7 +10,7 @@ No account or installation needed.
 
 | Project | What’s inside |
 | --- | --- |
-| [Drift: A Quiet TV Home Screen](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=drift-tv-launcher) | A minimal Android TV launcher with Apple aerial video, now playing and a night-listening dim mode. [Download the APK](https://andrewf13.github.io/Andrew-s-Playground/downloads/drift-2.0.apk) · [source](sources/drift). |
+| [Drift: A Quiet TV Home Screen](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=drift-tv-launcher) | A minimal Android TV launcher with Apple aerial video, now playing and a night-listening dim mode. [Download the APK](https://andrewf13.github.io/Andrew-s-Playground/downloads/drift.apk) · [source](sources/drift). |
 | [Wollstonecraft in Bloom](https://andrewf13.github.io/Andrew-s-Playground/artifacts/wollstonecraft-in-bloom.html) | A neighbourhood flower walk: one mapped Hazelbank Road stop, Andrew’s photograph, an annotated botanical illustration and walking directions. |
 | [Everest 1996: Into the Storm](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=everest-1996) | A guided ascent through the Khumbu Icefall to the summit, followed by the 10–11 May storm and rescue efforts, with optional sound and source notes. |
 | [Singapore, Andrew’s Way](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=singapore-local) | Explore a colourful voxel island with Changi jets, Marina Bay landmarks and twelve places, including Andrew’s food picks, Botanic Gardens and Night Safari. |

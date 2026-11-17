@@ -64,6 +64,9 @@ class MainActivity : Activity() {
     private lateinit var nowTitle: TextView
     private lateinit var nowArtist: TextView
     private lateinit var dimLayer: View
+    private lateinit var ui: FrameLayout
+    private var allAppsOverlay: View? = null
+    private var allAppsShowHidden = false
     private var dimmed = false
     private lateinit var nowPlaying: NowPlaying
     private var minutes = 0
@@ -356,7 +359,7 @@ class MainActivity : Activity() {
         dimLayer = View(this).apply { setBackgroundColor(Color.BLACK); alpha = 0f }
         root.addView(dimLayer, FrameLayout.LayoutParams(M, M))
 
-        val ui = FrameLayout(this).apply { clipChildren = false; clipToPadding = false; setPadding(dp(56), dp(40), dp(56), dp(30)) }
+        ui = FrameLayout(this).apply { clipChildren = false; clipToPadding = false; setPadding(dp(56), dp(40), dp(56), dp(30)) }
         root.addView(ui, FrameLayout.LayoutParams(M, M))
 
         // Top left: the time, very large and very thin. Nothing else competes with it.
@@ -586,6 +589,11 @@ class MainActivity : Activity() {
         else FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
         overlay.addView(content, lp)
         sheets.add(overlay to currentFocus)
+        // Trap focus in the new sheet: nothing underneath (the home rows, or an earlier sheet) can
+        // take focus, so pressing past the edge of a sheet stays in it instead of selecting tiles
+        // behind it.
+        ui.descendantFocusability = ViewGroup.FOCUS_BLOCK_DESCENDANTS
+        sheets.dropLast(1).forEach { (o, _) -> (o as ViewGroup).descendantFocusability = ViewGroup.FOCUS_BLOCK_DESCENDANTS }
         root.addView(overlay, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
         overlay.animate().alpha(1f).setDuration(140).start()
         main.removeCallbacks(idle)
@@ -602,6 +610,11 @@ class MainActivity : Activity() {
     private fun closeSheet(refocus: Boolean = true) {
         val (overlay, back) = sheets.removeLastOrNull() ?: return
         root.removeView(overlay)
+        if (overlay === allAppsOverlay) allAppsOverlay = null
+        // Hand focus back to whatever is now on top.
+        val top = sheets.lastOrNull()?.first as ViewGroup?
+        if (top != null) top.descendantFocusability = ViewGroup.FOCUS_AFTER_DESCENDANTS
+        else ui.descendantFocusability = ViewGroup.FOCUS_AFTER_DESCENDANTS
         if (refocus) (back?.takeIf { it.isAttachedToWindow } ?: favRow.getChildAt(0) ?: appRow.getChildAt(0))?.requestFocus()
         armIdle()
     }
@@ -640,8 +653,9 @@ class MainActivity : Activity() {
                 closeAll(); render(); favRow.findTile(pkg)?.requestFocus()
             }
         }
-        if (isHidden) p.action("Show on home") { store.hidden = store.hidden - pkg; closeAll(); render() }
-        else if (!isFav) p.action("Hide from home") { store.hidden = store.hidden + pkg; closeAll(); render() }
+        // Hide = gone from the home row AND All apps (it's listed under "Hidden apps" to bring back).
+        if (isHidden) p.action("Show again") { store.hidden = store.hidden - pkg; afterHideChange(pkg) }
+        else if (!isFav) p.action("Hide") { store.hidden = store.hidden + pkg; afterHideChange(pkg) }
         p.action("App info") {
             closeAll()
             openSystem(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:$pkg")))
@@ -652,6 +666,17 @@ class MainActivity : Activity() {
         }
         openSheet(p)
     }
+
+    /** After hiding/unhiding: refresh home, and if All apps was open, rebuild it in place so you can keep going. */
+    private fun afterHideChange(pkg: String) {
+        val fromAllApps = allAppsOverlay != null
+        val index = currentAllAppsIndex
+        closeAll()
+        render()
+        if (fromAllApps) openAllApps(allAppsShowHidden && store.hidden.isNotEmpty(), index)
+    }
+
+    private var currentAllAppsIndex = 0
 
     private fun closeAll() { while (sheets.isNotEmpty()) closeSheet(refocus = sheets.size == 1) }
 
@@ -730,7 +755,12 @@ class MainActivity : Activity() {
         openSheet(scroll, widthDp = 480)
     }
 
-    private fun openAllApps() {
+    /**
+     * All apps: every app except hidden ones, then a "Hidden apps" tile that reveals those (dimmed)
+     * so they can be brought back. Hold OK on any app for its options.
+     */
+    private fun openAllApps(showHidden: Boolean = false, focusIndex: Int = 0) {
+        allAppsShowHidden = showHidden
         val wrap = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(dp(56), dp(40), dp(56), 0)
@@ -744,18 +774,35 @@ class MainActivity : Activity() {
         val grid = GridLayout(this).apply { columnCount = cols; clipChildren = false; clipToPadding = false; setPadding(0, dp(8), 0, dp(40)) }
         val hidden = store.hidden
         val label = text(14f, "sans-serif-medium", 0.9f)
-        AppRepo.apps.forEachIndexed { i, a ->
-            val t = Tile(this, a.pkg, a.label, a.banner, a.icon, tileW, tileH, 1.08f).apply {
-                setOnClickListener { closeAll(); launch(a.pkg, null) }
-                setOnLongClickListener { appOptions(a.pkg); true }
-                onFocusChangeListener = View.OnFocusChangeListener { _, f ->
-                    if (f) label.text = a.label + if (a.pkg in hidden) "  ·  hidden" else ""
-                }
-            }
-            grid.addView(t, GridLayout.LayoutParams().apply {
+        val visible = AppRepo.apps.filter { it.pkg !in hidden }
+        val shownHidden = if (showHidden) AppRepo.apps.filter { it.pkg in hidden } else emptyList()
+        val tiles = ArrayList<View>()
+        fun place(v: View) {
+            val i = tiles.size
+            tiles += v
+            grid.addView(v, GridLayout.LayoutParams().apply {
                 width = tileW; height = tileH
                 if (i % cols != 0) leftMargin = gapPx
                 if (i >= cols) topMargin = gapPx
+            })
+        }
+        for (a in visible + shownHidden) {
+            val isHidden = a.pkg in hidden
+            place(Tile(this, a.pkg, a.label, a.banner, a.icon, tileW, tileH, 1.08f, restAlpha = if (isHidden) 0.3f else 0.78f).apply {
+                setOnClickListener { closeAll(); launch(a.pkg, null) }
+                setOnLongClickListener { appOptions(a.pkg); true }
+                onFocusChangeListener = View.OnFocusChangeListener { v, f ->
+                    if (f) { label.text = a.label + if (isHidden) "  ·  hidden" else ""; currentAllAppsIndex = tiles.indexOf(v) }
+                }
+            })
+        }
+        if (hidden.isNotEmpty()) {
+            val name = if (showHidden) "Hide hidden apps" else "Hidden apps (${hidden.size})"
+            place(Tile(this, "glyph:hidden", name, null, getDrawable(R.drawable.ic_grid), tileW, tileH, 1.08f, glyph = true).apply {
+                setOnClickListener { val i = tiles.indexOf(this); closeAll(); openAllApps(!showHidden, i) }
+                onFocusChangeListener = View.OnFocusChangeListener { v, f ->
+                    if (f) { label.text = if (showHidden) "Hide these again" else "Show ${hidden.size} hidden app" + (if (hidden.size == 1) "" else "s") + " (dimmed)"; currentAllAppsIndex = tiles.indexOf(v) }
+                }
             })
         }
         val scroll = ScrollView(this).apply {
@@ -765,7 +812,10 @@ class MainActivity : Activity() {
         wrap.addView(label)
         wrap.addView(scroll, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT))
         val overlay = openSheet(wrap, widthDp = 0)
-        overlay.setBackgroundColor(0xEB06080D.toInt())
+        // Solid, so the home screen doesn't show through.
+        overlay.setBackgroundResource(R.drawable.window_bg)
+        allAppsOverlay = overlay
+        tiles.getOrNull(focusIndex.coerceIn(0, (tiles.size - 1).coerceAtLeast(0)))?.let { t -> t.post { t.requestFocus() } }
     }
 
     // ---------------------------------------------------------------- clock, caption, network

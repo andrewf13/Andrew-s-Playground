@@ -9,13 +9,13 @@ no recommendation rows and no profiles.
 
 ## ⬇ Download
 
-**[Download Drift 2.0 (APK, 340 KB)](https://andrewf13.github.io/Andrew-s-Playground/downloads/drift-2.0.apk)**. Works on Android TV 9 or newer, including the NVIDIA Shield, Chromecast with Google TV and most Google TV boxes.
+**[Download Drift (latest: 2.1, APK, 340 KB)](https://andrewf13.github.io/Andrew-s-Playground/downloads/drift.apk)**. Works on Android TV 9 or newer, including the NVIDIA Shield, Chromecast with Google TV and most Google TV boxes.
 
 **Install it using only the TV remote:**
 
 1. On the TV, install **Downloader** (by AFTVnews) from the Play Store.
 2. Open Downloader and type this address:
-   `andrewf13.github.io/Andrew-s-Playground/downloads/drift-2.0.apk`
+   `andrewf13.github.io/Andrew-s-Playground/downloads/drift.apk`
 3. When Android asks, allow Downloader to install unknown apps, then choose **Install**.
 4. Open **Drift**. Its *Home screen* wizard shows you how to make the Home button open Drift.
    - Choose **Turn on Home button helper**.
@@ -26,7 +26,7 @@ no recommendation rows and no profiles.
    - Set **Fade to → Dim when music plays** for night listening.
 
 Each TV keeps its own settings. There's no account, and nothing is shared between devices or sent anywhere.
-For a newer version, download and install again over the top; your settings are kept.
+For a newer version, download from the same address and install over the top; your settings are kept.
 
 [See it in action on the Playground →](https://andrewf13.github.io/Andrew-s-Playground/play.html?project=drift-tv-launcher)
 
@@ -50,7 +50,7 @@ For a newer version, download and install again over the top; your settings are 
 - **Hold OK** (or **Menu** on the Shield remote): app options.
   - *Move*: reorder a favourite with ◀ ▶, then press OK.
   - *Add to / remove from favourites*.
-  - *Hide from home*.
+  - *Hide*: removes the app from the home row and All apps. Hidden apps are listed under the **Hidden apps** tile at the end of All apps, where *Show again* brings them back.
   - *App info*.
   - *Uninstall*.
 - **Back**: closes whatever is open. On the home screen it returns to the first favourite.
@@ -83,7 +83,7 @@ From a PC on the same network, with **Developer options → Network debugging** 
 
 ```bash
 adb connect <tv-ip>:5555
-adb install -r drift-2.0.apk   # from the Playground downloads folder
+adb install -r drift.apk   # from the Playground downloads folder
 ```
 
 Published releases are all signed with the same key, so a newer one installs over the old one with `-r` and your favourites are kept.

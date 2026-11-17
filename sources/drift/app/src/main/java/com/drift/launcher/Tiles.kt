@@ -38,6 +38,8 @@ class Tile(
     h: Int,
     private val focusScale: Float,
     glyph: Boolean = false,
+    /** Brightness when not focused; hidden apps in All apps use a much dimmer value. */
+    private val restAlpha: Float = 0.78f,
 ) : FrameLayout(ctx) {
 
     private val radius = ctx.dp(if (h > ctx.dp(90)) 14 else 10).toFloat()
@@ -47,7 +49,6 @@ class Tile(
         setColor(Color.TRANSPARENT)
         alpha = 0
     }
-    private val restAlpha = 0.78f
     var lifted = false
         set(v) { field = v; animateTo(hasFocus() || v) }
 
