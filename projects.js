@@ -4,15 +4,15 @@ window.PROJECTS = [
   "title": "Drift: A Quiet TV Home Screen",
   "category": "Apps",
   "kind": "Android TV launcher",
-  "edition": "v2.1 · Shield & Google TV",
-  "description": "A minimal Android TV launcher: Apple aerial video behind a thin clock, one row of favourites, now playing for music and a near-black night mode. Download the APK and set it up with the remote.",
+  "edition": "v2.2 · Shield, Google TV & TVs",
+  "description": "A minimal Android TV launcher: Apple aerial video behind a thin clock, one row of favourites and your TV inputs, now playing for music and a near-black night mode. Download the APK and set it up with the remote.",
   "controls": "Android TV · APK",
   "file": "artifacts/drift-tv-launcher.html",
   "line1": "DRIFT",
   "line2": "TV LAUNCHER",
   "year": "2026",
   "number": "11",
-  "bytes": 14529
+  "bytes": 14616
 },
 {
   "id": "wollstonecraft-in-bloom",

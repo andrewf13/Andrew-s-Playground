@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A source/input: arrow into a screen. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24">
+    <path android:strokeColor="#FFFFFFFF" android:strokeWidth="1.8" android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M9,5H19A2,2 0,0 1,21 7V17A2,2 0,0 1,19 19H9M3,12H14M10.5,8.5L14,12L10.5,15.5" />
+</vector>

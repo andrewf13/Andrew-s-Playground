@@ -9,7 +9,7 @@ no recommendation rows and no profiles.
 
 ## ⬇ Download
 
-**[Download Drift (latest: 2.1, APK, 340 KB)](https://andrewf13.github.io/Andrew-s-Playground/downloads/drift.apk)**. Works on Android TV 9 or newer, including the NVIDIA Shield, Chromecast with Google TV and most Google TV boxes.
+**[Download Drift (latest: 2.2, APK, 340 KB)](https://andrewf13.github.io/Andrew-s-Playground/downloads/drift.apk)**. Works on Android TV 9 or newer, including the NVIDIA Shield, Chromecast with Google TV, most Google TV boxes and TVs such as Sony Bravia.
 
 **Install it using only the TV remote:**
 
@@ -42,6 +42,7 @@ For a newer version, download from the same address and install over the top; yo
 | **Now playing** | Track, artist • album and album art (long names scroll) from Qobuz (or any player) under the clock, staying visible while the screen is faded. Needs a one-off adb grant (see below). |
 | **OLED burn-in protection** | The clock block and the info column drift to a new spot every minute, much further once the screen has faded. Static text is also dimmed while faded, and an *Aerial still* background swaps to a new frame every five minutes. |
 | **Three clock fonts** | Modern (Roboto Thin), Geometric (Outfit) and Serif (Fraunces). See `docs/fonts.png`. |
+| **TV inputs** | On TVs with HDMI inputs (e.g. a Sony Bravia), each source appears as a tile at the start of the apps row and in All apps, named as in the Source menu (e.g. *SHIELD · HDMI 1*). Unplugged inputs are dimmed. They can be favourited or hidden like apps. |
 | **Screensaver tile** | Opens Aerial Dream's full-screen player straight away. If Aerial Dream isn't installed, Drift's own aerial fills the screen instead. |
 
 ### Remote controls

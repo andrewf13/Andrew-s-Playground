@@ -88,6 +88,7 @@ class MainActivity : Activity() {
         applyFont()
         if (AppRepo.apps.isNotEmpty()) render()
         reloadApps()
+        runCatching { getSystemService(android.media.tv.TvInputManager::class.java)?.registerCallback(inputWatch, main) }
         // First run, and Drift isn't the home screen yet: offer the wizard once the UI has settled.
         if (!store.setupSeen && !isHome()) main.postDelayed({ if (sheets.isEmpty()) openHomeSetup() }, 1200)
         registerReceiver(packages, IntentFilter().apply {
@@ -163,7 +164,16 @@ class MainActivity : Activity() {
         main.removeCallbacks(releaseScreen); releaseScreen.run()
     }
 
+    /** Sources come and go (a device switched on, a cable plugged in): refresh the tiles. */
+    private val inputWatch = object : android.media.tv.TvInputManager.TvInputCallback() {
+        override fun onInputStateChanged(inputId: String, state: Int) { main.postDelayed({ reloadApps() }, 400) }
+        override fun onInputAdded(inputId: String) { main.postDelayed({ reloadApps() }, 400) }
+        override fun onInputRemoved(inputId: String) { main.postDelayed({ reloadApps() }, 400) }
+        override fun onInputUpdated(inputId: String) { main.postDelayed({ reloadApps() }, 400) }
+    }
+
     override fun onDestroy() {
+        runCatching { getSystemService(android.media.tv.TvInputManager::class.java)?.unregisterCallback(inputWatch) }
         runCatching { unregisterReceiver(packages) }
         super.onDestroy()
     }
@@ -486,7 +496,7 @@ class MainActivity : Activity() {
         LinearLayout.LayoutParams(w, h).apply { if (index > 0) leftMargin = px }
 
     private fun appTile(a: AppEntry, w: Int, h: Int, scale: Float) =
-        Tile(this, a.pkg, a.label, a.banner, a.icon, w, h, scale).apply {
+        Tile(this, a.pkg, a.label, a.banner, a.icon, w, h, scale, restAlpha = if (a.dim) 0.4f else 0.78f).apply {
             setOnClickListener { launch(a.pkg, this) }
             setOnLongClickListener { appOptions(a.pkg); true }
             onFocusChangeListener = View.OnFocusChangeListener { _, f -> if (f && moving == null) focusLabel.text = a.label }
@@ -656,11 +666,11 @@ class MainActivity : Activity() {
         // Hide = gone from the home row AND All apps (it's listed under "Hidden apps" to bring back).
         if (isHidden) p.action("Show again") { store.hidden = store.hidden - pkg; afterHideChange(pkg) }
         else if (!isFav) p.action("Hide") { store.hidden = store.hidden + pkg; afterHideChange(pkg) }
-        p.action("App info") {
+        if (!Inputs.isInput(pkg)) p.action("App info") {
             closeAll()
             openSystem(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:$pkg")))
         }
-        p.action("Uninstall") {
+        if (!Inputs.isInput(pkg)) p.action("Uninstall") {
             closeAll()
             openSystem(Intent(Intent.ACTION_DELETE, Uri.parse("package:$pkg")))
         }
@@ -788,7 +798,7 @@ class MainActivity : Activity() {
         }
         for (a in visible + shownHidden) {
             val isHidden = a.pkg in hidden
-            place(Tile(this, a.pkg, a.label, a.banner, a.icon, tileW, tileH, 1.08f, restAlpha = if (isHidden) 0.3f else 0.78f).apply {
+            place(Tile(this, a.pkg, a.label, a.banner, a.icon, tileW, tileH, 1.08f, restAlpha = if (isHidden) 0.3f else if (a.dim) 0.4f else 0.78f).apply {
                 setOnClickListener { closeAll(); launch(a.pkg, null) }
                 setOnLongClickListener { appOptions(a.pkg); true }
                 onFocusChangeListener = View.OnFocusChangeListener { v, f ->
