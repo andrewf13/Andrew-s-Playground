@@ -11,6 +11,8 @@ class AppEntry(
     val label: String,
     val banner: Drawable?,
     val icon: Drawable,
+    /** Shown dimmed, e.g. a TV input with nothing plugged in. */
+    val dim: Boolean = false,
 )
 
 /** Every launchable app on the box, loaded once off the main thread and kept in memory. */
@@ -34,13 +36,16 @@ object AppRepo {
             val banner = runCatching { ai.loadBanner(pm) ?: ai.applicationInfo.loadBanner(pm) }.getOrNull()
             AppEntry(ai.packageName, ri.loadLabel(pm).toString().trim(), banner, ri.loadIcon(pm))
         }.sortedBy { it.label.lowercase() }
-        apps = list
-        return list
+        // TV sources (HDMI…) first, like the Source menu; empty on boxes without inputs.
+        val inputs = runCatching { Inputs.load(ctx) }.getOrDefault(emptyList())
+        apps = inputs + list
+        return apps
     }
 
     fun find(pkg: String) = apps.firstOrNull { it.pkg == pkg }
 
     fun launchIntent(ctx: Context, pkg: String): Intent? {
+        if (Inputs.isInput(pkg)) return Inputs.intent(pkg)
         val pm = ctx.packageManager
         return (pm.getLeanbackLaunchIntentForPackage(pkg) ?: pm.getLaunchIntentForPackage(pkg))
             ?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
